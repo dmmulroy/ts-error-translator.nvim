@@ -1,0 +1,1 @@
+# bettter-ts-errors.nvim
