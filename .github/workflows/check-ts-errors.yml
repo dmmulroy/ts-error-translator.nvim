@@ -3,6 +3,7 @@ name: Check TS Errors and Open PR
 on:
   schedule:
     - cron: '0 0 * * *' # Runs daily at midnight UTC
+  workflow_dispatch: #Manual trigger 
 
 jobs:
   check-ts-errors:
