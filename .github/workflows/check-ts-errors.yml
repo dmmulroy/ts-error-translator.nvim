@@ -6,37 +6,15 @@ on:
   workflow_dispatch: #Manual trigger 
 
 jobs:
-  check-ts-errors:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Check for Changes in ts-error-translator
+      - uses: actions/checkout@v3
+      
+      - name: Run shell commands
         run: |
-          REPO_OWNER="mattpocock"
-          REPO_NAME="ts-error-translator"
-          FOLDER_PATH="packages/engine/errors"
-
-          CHANGES=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
-            "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/compare/main...$REPO_OWNER:main?path=$FOLDER_PATH")
-
-          if [ "$CHANGES" != "{\"status\":\"identical\"}" ]; then
-            echo "Changes detected. Creating a PR..."
-            # Create a PR using the GitHub API
-            PR_TITLE="Update $FOLDER_PATH from $REPO_OWNER/$REPO_NAME"
-            PR_BODY="This PR updates $FOLDER_PATH from $REPO_OWNER/$REPO_NAME."
-            PR_HEAD="$REPO_OWNER:main"
-            PR_BASE="main"
-            PR_JSON="{\"title\":\"$PR_TITLE\",\"body\":\"$PR_BODY\",\"head\":\"$PR_HEAD\",\"base\":\"$PR_BASE\"}"
-
-            PR_URL=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
-              -d "$PR_JSON" \
-              "https://api.github.com/repos/$GITHUB_REPOSITORY/pulls" | jq -r .html_url)
-            echo "PR created: $PR_URL"
-          else
-            echo "No changes detected."
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+          git config --global url.https://github.com/.insteadOf git://github.com/
+	  git clone https://github.com/mattpocock/ts-error-translator.git
+	  pwd
+	  
