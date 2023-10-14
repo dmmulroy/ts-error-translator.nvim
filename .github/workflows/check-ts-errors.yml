@@ -1,18 +1,47 @@
-name: Check TS Errors and Open PR
+name: Clone Repositories and Compare Directories
 
 on:
-  schedule:
-    - cron: '0 0 * * *' # Runs daily at midnight UTC
-  workflow_dispatch: #Manual trigger 
+  push:
+    branches:
+      #- main
+      - km-main-change
 
 jobs:
-  build:
+  clone-repos:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Run shell commands
+      - name: Check Out Repository
+        uses: actions/checkout@v3
+
+      - name: Clone Repository 1
+        run: git clone ${{ secrets.REPO_URL1 }} ${{ secrets.DIRECTORY_NAME1 }}
+        env:
+          REPO_URL1: ${{ secrets.REPO_URL1 }}
+          DIRECTORY_NAME1: ${{ secrets.DIRECTORY_NAME1 }}
+
+      - name: Clone Repository 2
+        run: git clone ${{ secrets.REPO_URL2 }} ${{ secrets.DIRECTORY_NAME2 }}
+        env:
+          REPO_URL2: ${{ secrets.REPO_URL2 }}
+          DIRECTORY_NAME2: ${{ secrets.DIRECTORY_NAME2 }}
+
+  compare-dirs:
+    needs: clone-repos
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Git
+        uses: actions/checkout@v3
+
+      - name: Compare Directories
         run: |
-          git config --global url.https://github.com/.insteadOf git://github.com/
-	  git clone https://github.com/mattpocock/ts-error-translator.git
-	  pwd
-	  
+          # Run the diff command
+          diff -r "${{ secrets.DIRECTORY_NAME1 }}/packages/config/engine/errors" "${{ secrets.DIRECTORY_NAME2 }}/error-templates" || true
+
+          # Synchronize the directories using rsync
+          rsync -r --delete "${{ secrets.DIRECTORY_NAME1 }}/packages/config/engine/errors/" "${{ secrets.DIRECTORY_NAME2 }}/error-templates/"
+          
+        env:
+          DIRECTORY_NAME1: ${{ secrets.DIRECTORY_NAME1 }}
+          DIRECTORY_NAME2: ${{ secrets.DIRECTORY_NAME2 }}
