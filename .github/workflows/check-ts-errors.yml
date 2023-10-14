@@ -15,16 +15,16 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Clone Repository 1
-        run: git clone ${{ secrets.REPO_URL1 }} ${{ secrets.DIRECTORY_NAME1 }}
+        run: git clone ${{ secrets.REPO_URL1 }} ts_error_translator
         env:
           REPO_URL1: ${{ secrets.REPO_URL1 }}
-          DIRECTORY_NAME1: ${{ secrets.DIRECTORY_NAME1 }}
+          DIRECTORY_NAME1: ts_error_translator
 
       - name: Clone Repository 2
-        run: git clone ${{ secrets.REPO_URL2 }} ${{ secrets.DIRECTORY_NAME2 }}
+        run: git clone ${{ secrets.REPO_URL2 }} better_ts_errors
         env:
           REPO_URL2: ${{ secrets.REPO_URL2 }}
-          DIRECTORY_NAME2: ${{ secrets.DIRECTORY_NAME2 }}
+          DIRECTORY_NAME2: better_ts_errors
 
   compare-dirs:
     needs: clone-repos
@@ -37,11 +37,11 @@ jobs:
       - name: Compare Directories
         run: |
           # Run the diff command
-          diff -r "${{ secrets.DIRECTORY_NAME1 }}/packages/config/engine/errors" "${{ secrets.DIRECTORY_NAME2 }}/error-templates" || true
+          diff -r ts_error_translator/packages/config/engine/errors" "better_ts_errors/error-templates" || true
 
           # Synchronize the directories using rsync
-          rsync -r --delete "${{ secrets.DIRECTORY_NAME1 }}/packages/config/engine/errors/" "${{ secrets.DIRECTORY_NAME2 }}/error-templates/"
+          rsync -r --delete ts_error_translator/packages/config/engine/errors/" "better_ts_errors/error-templates/"
           
         env:
-          DIRECTORY_NAME1: ${{ secrets.DIRECTORY_NAME1 }}
-          DIRECTORY_NAME2: ${{ secrets.DIRECTORY_NAME2 }}
+          DIRECTORY_NAME1: ts_error_translator
+          DIRECTORY_NAME2: better_ts_errors
