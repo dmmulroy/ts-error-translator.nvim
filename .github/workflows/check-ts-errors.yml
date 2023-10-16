@@ -1,37 +1,26 @@
-name: Sync Files
+name: Compare Directories
+
 on:
   push:
     branches:
       - km-main-change
-      #- main <- Change before PR
-  workflow_dispatch:
+      #- main
 
-jobs:     
-  sync-errors-and-create-pr:
+jobs:
+  Compare:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout dmmulroy/better-ts-errors.nvim
+      uses: actions/checkout@v3
+      with:
+        repository: dmmulroy/better-ts-errors.nvim
+        path: better_ts_errors/
+        ref: km-main-change #main <- change back before push to prod
 
-      - name: Sync Errors
-        uses: BetaHuhn/repo-file-sync-action@v1
-        with:
-          GH_INSTALLATION_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Clone ts-error-translator repository
+      run: git clone https://github.com/mattpocock/ts-error-translator.git ts_error_translator/
 
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          title: 'Sync Error Templates'
-          branch: sync-error-templates
-          base: main  # Replace with your desired base branch
-          body: 'Synced error_templates from ts-error-translator.'
-          commit-message: 'Sync error_templates'
-          delete-branch: true
+    - name: List contents of error_templates/
+      run: ls better_ts_errors/
 
-      - name: PR Created
-        if: steps.create_pr.outputs.pull_request_number != ''
-        run: |
-          echo "PR created: ${{ steps.create_pr.outputs.pull_request_number }}"
-          echo "::set-output name=pull_request_number::${{ steps.create_pr.outputs.pull_request_number }}"
