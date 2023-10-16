@@ -58,13 +58,15 @@ jobs:
 
       - name: Set Permissions
         run: |
+          ls
+          pwd
           chmod -R 777 ts_error_translator/
           chmod -R 777 better_ts_errors/
 
       - name: Synchronize Error Directories
         run: |
           # Run the diff command
-          diff -r "/home/runner/work/ts-error-translator/packages/engine/errors" "/home/runner/work/better-ts-errors.nvim/better-ts-errors.nvim" || true
+          diff -r "/home/runner/work/ts-error-translator/packages/engine/errors/" "/home/runner/work/better-ts-errors.nvim/" || true
 
           # Synchronize the directories using rsync
           #rsync -ru "ts_error_translator/packages/config/engine/errors/" "better_ts_errors/error-templates/"
