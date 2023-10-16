@@ -26,4 +26,7 @@ jobs:
         ls better_ts_errors/error_templates
         ls ts_error_translator/packages/engine/errors/
     
+    - name: Run the diff
+      run: |
+        diff -r ts_error_translator/packages/engine/errors better_ts_errors/error_templates
 
