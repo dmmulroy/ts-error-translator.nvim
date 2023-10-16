@@ -9,9 +9,6 @@ on:
 jobs:
   Compare:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash {0}
 
     steps:
     - name: Checkout dmmulroy/better-ts-errors.nvim
@@ -30,5 +27,6 @@ jobs:
         ls ts_error_translator/packages/engine/errors/
     
     - name: Run the diff
+      shell: bash {0}
       run: diff -r ts_error_translator/packages/engine/errors better_ts_errors/error_templates
 
