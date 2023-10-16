@@ -29,9 +29,12 @@ jobs:
       run: git clone https://github.com/mattpocock/ts-error-translator.git ts-error-translator/
 
     - name: List contents 
-      run: ls ts-error-translator/
+      run: ls -la ${GITHUB_WORKSPACE}
+    
+    - name: get path
+      run: pwd
 
-    - name: Compare Directories
-      run: |
-        chmod +x ${GITHUB_WORKSPACE}/scripts/open_pr.sh
-        #./${GITHUB_WORKSPACE}/scripts/open_pr.sh
+    # - name: Compare Directories
+    #   run: |
+    #     chmod +x ${GITHUB_WORKSPACE}/scripts/open_pr.sh
+    #     #./${GITHUB_WORKSPACE}/scripts/open_pr.sh
