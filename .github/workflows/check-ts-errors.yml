@@ -30,3 +30,37 @@ jobs:
       shell: bash {0}
       run: diff -r ts_error_translator/packages/engine/errors better_ts_errors/error_templates
 
+    - name: Compare Directories
+      run: |
+        dir1="better_ts_errors/error_templates"
+        dir2="ts_error_translator/packages/engine/errors/"
+
+        # Use diff to compare the directories and display the differences directly
+        differences=$(diff -rq "$dir1" "$dir2")
+
+        # Check the exit code of diff (0 if no differences, 1 if differences found)
+        if [ $? -eq 0 ]; then
+          echo "No differences found."
+        else
+          echo "Differences found:"
+          echo "$differences"
+
+          # Create a branch and push the changes
+          git checkout -b branch-for-differences
+          git add .
+          git commit -m "Differences found"
+          git push origin branch-for-differences
+
+          # Create a pull request
+          curl -X POST -H "Authorization: token $GITHUB_TOKEN" -d '{
+            "title": "Differences Found",
+            "head": "branch-for-differences",
+            "base": "main",  # Adjust the target branch as needed
+            "body": "Differences were found between directories.",
+            "maintainer_can_modify": true
+          }' "https://api.github.com/repos/dmmulroy/better-ts-errors.nvim/pulls"
+          
+          exit 1  # Fail the workflow
+        fi
+
+
