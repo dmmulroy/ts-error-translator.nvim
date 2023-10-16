@@ -32,7 +32,4 @@ jobs:
       run: ls ts-error-translator/
 
     - name: Compare Directories
-      run: |
-        cd scripts
-        chmod +x open_pr.sh
-        ./open_pr.sh
+      run: bash ${GITHUB_WORKSPACE}/scripts/open_pr.sh
