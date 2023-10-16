@@ -63,7 +63,7 @@ jobs:
           diff -r better_ts_errors/error_templates ts_error_translator/packages/engine/errors
 
           # Synchronize the directories using rsync
-          rsync -ru "ts_error_translator/packages/config/engine/errors/" "better_ts_errors/error_templates/"
+          rsync -ru ts_error_translator/packages/config/engine/errors/ better_ts_errors/error_templates/
 
   create-pr:
     needs: sync-dirs
