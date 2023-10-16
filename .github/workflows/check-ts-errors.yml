@@ -16,15 +16,9 @@ jobs:
 
       - name: Clone Repository 1
         run: git clone https://github.com/mattpocock/ts-error-translator.git ts_error_translator/
-        env:
-          REPO_URL1: https://github.com/mattpocock/ts-error-translator.git
-          DIRECTORY_NAME1: ts_error_translator
 
       - name: Clone Repository 2
         run: git clone https://github.com/dmmulroy/better-ts-errors.nvim.git better_ts_errors/
-        env:
-          REPO_URL2: https://github.com/dmmulroy/better-ts-errors.nvim.git
-          DIRECTORY_NAME2: better_ts_errors
 
       - name: Archive Directories
         run: |
@@ -66,7 +60,7 @@ jobs:
       - name: Synchronize Error Directories
         run: |
           # Run the diff command
-          diff -r "/home/runner/work/ts-error-translator/packages/engine/errors/" "/home/runner/work/better-ts-errors.nvim/" || true
+          diff -r "ts-error-translator/packages/engine/errors/" "better_ts_erros" || true
 
           # Synchronize the directories using rsync
           #rsync -ru "ts_error_translator/packages/config/engine/errors/" "better_ts_errors/error-templates/"
