@@ -68,10 +68,6 @@ jobs:
 
           # Synchronize the directories using rsync
           rsync -ru "ts_error_translator/packages/config/engine/errors/" "better_ts_errors/error-templates/"
-          
-        env:
-          DIRECTORY_NAME1: ts_error_translator
-          DIRECTORY_NAME2: better_ts_errors
 
   # create-pr:
   #   needs: sync-dirs
@@ -97,6 +93,3 @@ jobs:
   #         # Create a pull request
   #         hub pull-request -m "Sync better_ts_errors with ts_error_translator" || true
 
-  #       env:
-  #         DIRECTORY_NAME1: ts_error_translator
-  #         DIRECTORY_NAME2: better_ts_errors
