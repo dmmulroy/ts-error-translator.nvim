@@ -26,7 +26,6 @@ jobs:
       run: git clone https://github.com/mattpocock/ts-error-translator.git ts-error-translator/
 
     - name: Compare Directories
-      shell: bash
       run: |
         #!/bin/bash
         dmmulroyDir="error_templates/"
