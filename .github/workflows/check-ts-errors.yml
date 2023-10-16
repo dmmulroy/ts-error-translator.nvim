@@ -20,18 +20,19 @@ jobs:
           sourceRepository: mattpocock/ts-error-translator
           sourceFolder: packages/engine/errors
           destinationFolder: error_templates
-          destinationToke: ${{ secrets.GITHUB_TOKEN }}
+          destinationToken: ${{ secrets.GITHUB_TOKEN }}
+          GH_INSTALLATION_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create PR
-        id: create_pr
-        uses: EndBug/add-and-commit@v9
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
         with:
-          default_branch: main # Change this to match your main branch
-          branch_name: sync-errors-${{ github.run_id }}
-          base: main # Change this to match your main branch
-          author_email: test@test.com
-          author_name: test
-          commit_message: 'Sync Errors from ts-error-translator'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: 'Sync Error Templates'
+          branch: sync-error-templates
+          base: main  # Replace with your desired base branch
+          body: 'Synced error_templates from ts-error-translator.'
+          commit-message: 'Sync error_templates'
+          delete-branch: true
 
       - name: PR Created
         if: steps.create_pr.outputs.pull_request_number != ''
