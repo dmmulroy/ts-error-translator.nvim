@@ -63,29 +63,29 @@ jobs:
           diff -r better_ts_errors/error-templates ts_error_translator/packages/engine/errors
 
           # Synchronize the directories using rsync
-          #rsync -ru "ts_error_translator/packages/config/engine/errors/" "better_ts_errors/error-templates/"
+          rsync -ru "ts_error_translator/packages/config/engine/errors/" "better_ts_errors/error-templates/"
 
-  # create-pr:
-  #   needs: sync-dirs
-  #   runs-on: ubuntu-latest
+  create-pr:
+    needs: sync-dirs
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: Set up Git
-  #       uses: actions/checkout@v3
+    steps:
+      - name: Set up Git
+        uses: actions/checkout@v3
       
-  #     - name: Download Artifact
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         name: directory-artifact
-  #         path: ${{ github.workspace }}      
+      - name: Download Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: directory-artifact
+          path: ${{ github.workspace }}      
 
-  #     - name: Create Pull Request
-  #       run: |
-  #         # Commit the changes in better_ts_errors
-  #         git -C better_ts_errors add .
-  #         git -C better_ts_errors commit -m "Sync with ts_error_translator"
-  #         git -C better_ts_errors push
+      - name: Create Pull Request
+        run: |
+          # Commit the changes in better_ts_errors
+          git -C better_ts_errors add .
+          git -C better_ts_errors commit -m "Sync with ts_error_translator"
+          git -C better_ts_errors push
 
-  #         # Create a pull request
-  #         hub pull-request -m "Sync better_ts_errors with ts_error_translator" || true
+          # Create a pull request
+          hub pull-request -m "Sync better_ts_errors with ts_error_translator" || true
 
