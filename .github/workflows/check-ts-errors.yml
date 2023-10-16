@@ -52,7 +52,7 @@ jobs:
 
       - name: Set Permissions
         run: |
-          ls
+          ls -lah
           pwd
           chmod -R 777 ts_error_translator/
           chmod -R 777 better_ts_errors/
