@@ -21,6 +21,9 @@ jobs:
     - name: Clone ts-error-translator repository
       run: git clone https://github.com/mattpocock/ts-error-translator.git ts_error_translator/
 
-    - name: List contents of error_templates/
-      run: ls better_ts_errors/
+    - name: List contents of error_templates/ and errors
+      run: |
+        ls better_ts_errors/error_templates
+        ls ts_error_translator/packages/engine/errors/
+    
 
