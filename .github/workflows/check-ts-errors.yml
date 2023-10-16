@@ -1,32 +1,38 @@
-name: Compare Directories
-
+name: Sync Files
 on:
   push:
     branches:
       - km-main-change
       #- main <- Change before PR
-
+  workflow_dispatch:
 jobs:
-  Compare:
+  sync-errors-and-create-pr:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
 
     steps:
-    - name: Checkout dmmulroy/better-ts-errors.nvim
-      run: git clone https://github.com/dmmulroy/better-ts-errors.nvim.git better-ts-errors.nvim/
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Clone ts-error-translator repository
-      run: git clone https://github.com/mattpocock/ts-error-translator.git ts-error-translator/
+      - name: Sync Errors
+        uses: BetaHuhn/repo-file-sync-action@v1 #can change to latest
+        with:
+          sourceRepository: mattpocock/ts-error-translator
+          sourceFolder: packages/engine/errors
+          destinationFolder: error_templates
 
-    - name: List contents 
-      run: ls -la ${GITHUB_WORKSPACE}
-    
-    - name: get path
-      run: pwd
+      - name: Create PR
+        id: create_pr
+        uses: mshick/add-and-commit@v2
+        with:
+          default_branch: main # Change this to match your main branch
+          branch_name: sync-errors-${{ github.run_id }}
+          base: main # Change this to match your main branch
+          author_email: test@test.com
+          author_name: test
+          commit_message: 'Sync Errors from ts-error-translator'
 
-    - name: Compare Directories
-      run: |
-        chmod +x /home/runner/work/better-ts-errors.nvim/scripts/open_pr.sh
-        #./home/runner/work/better-ts-errors.nvim/scripts/open_pr.sh
+      - name: PR Created
+        if: steps.create_pr.outputs.pull_request_number != ''
+        run: |
+          echo "PR created: ${{ steps.create_pr.outputs.pull_request_number }}"
+          echo "::set-output name=pull_request_number::${{ steps.create_pr.outputs.pull_request_number }}"
