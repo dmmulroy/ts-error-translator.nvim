@@ -1,4 +1,4 @@
-name: Clone Repositories and Compare Directories
+name: Compare Directory
 
 on:
   push:
@@ -7,88 +7,34 @@ on:
       - km-main-change
 
 jobs:
-  clone-repos:
+  compare:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check Out Repository
-        uses: actions/checkout@v3
+    - name: Checkout better_ts_errors
+      uses: actions/checkout@v3
+      with:
+        repository: https://github.com/dmmulroy/better-ts-errors.nvim.git
+        path: error_templates
+        ref: km-main-change #main <- change back to main before pushing to prod
 
-      - name: Clone Repository 1
-        run: git clone https://github.com/mattpocock/ts-error-translator.git ts_error_translator/
+    - name: Checkout ts-error-translator
+      uses: actions/checkout@v3
+      with:
+        repository: https://github.com/mattpocock/ts-error-translator.git
+        path: packages/engine/errors
+        ref: main  
 
-      - name: Clone Repository 2
-        run: git clone https://github.com/dmmulroy/better-ts-errors.nvim.git better_ts_errors/
+    - name: List files in the first directory
+      run: |
+        cd ts-error-translator/packages/engine/errors
+        find . -type f
 
-      - name: Archive Directories
-        run: |
-          tar -czf directories.tar.gz "ts_error_translator/" "better_ts_errors/"
-        working-directory: ${{ github.workspace }}
+    - name: List files in the second directory
+      run: |
+        cd better_ts_errors/error_templates
+        find . -type f
 
-      - name: Create Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: directory-artifact
-          path: directories.tar.gz
-
-  sync-dirs:
-    needs: clone-repos
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Set up Git
-        uses: actions/checkout@v3
-      
-      - name: Download Artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: directory-artifact
-          path: ${{ github.workspace }}
-
-      - name: Extract Directories
-        run: |
-          tar -xzf directories.tar.gz
-        working-directory: ${{ github.workspace }}
-
-      - name: Set Permissions
-        run: |
-          ls -lah
-          pwd
-          chmod -R 777 ts_error_translator/
-          chmod -R 777 better_ts_errors/
-
-      - name: Synchronize Error Directories
-        run: |
-          # Run the diff command
-          ls -lah
-          ls -la better_ts_errors/error_templates/
-          ls -la ts_error_translator/packages/config/engine/errors/
-          diff -r "better_ts_errors/error_templates" "ts_error_translator/"
-
-          # Synchronize the directories using rsync
-          #rsync -ru ts_error_translator/packages/config/engine/errors/ better_ts_errors/error_templates/
-
-  create-pr:
-    needs: sync-dirs
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Set up Git
-        uses: actions/checkout@v3
-      
-      - name: Download Artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: directory-artifact
-          path: ${{ github.workspace }}      
-
-      - name: Create Pull Request
-        run: |
-          # Commit the changes in better_ts_errors
-          git -C better_ts_errors add .
-          git -C better_ts_errors commit -m "Sync with ts_error_translator"
-          git -C better_ts_errors push
-
-          # Create a pull request
-          hub pull-request -m "Sync better_ts_errors with ts_error_translator" || true
-
+    - name: Run the diff
+      run: |
+        diff -r ts-error-translator/packages/engine/errors better_ts_errors/error_templates
