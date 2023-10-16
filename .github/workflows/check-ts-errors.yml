@@ -35,7 +35,7 @@ jobs:
         diff -rq "$dmmulroyDir" "$mattpocockDir" > directory_diff.txt
 
         # Check the exit code of diff (0 if no differences, 1 if differences found)
-        if [ $? -eq 0 ]; then
+        if [[ $? -eq 0 ]]; then
               echo "No differences found."
             else
               echo "Differences found:"
