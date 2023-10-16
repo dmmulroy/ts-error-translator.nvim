@@ -9,6 +9,9 @@ on:
 jobs:
   Compare:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
 
     steps:
     - name: Checkout dmmulroy/better-ts-errors.nvim
@@ -27,7 +30,6 @@ jobs:
 
     - name: Compare Directories
       run: |
-        #!/bin/bash
         dmmulroyDir="error_templates/"
         mattpocockDir="ts-error-translator/packages/engine/errors/"
 
