@@ -17,10 +17,6 @@ jobs:
       - name: Sync Errors
         uses: BetaHuhn/repo-file-sync-action@v1
         with:
-          sourceRepository: mattpocock/ts-error-translator
-          sourceFolder: packages/engine/errors
-          destinationFolder: error_templates
-          destinationToken: ${{ secrets.GITHUB_TOKEN }}
           GH_INSTALLATION_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Pull Request
