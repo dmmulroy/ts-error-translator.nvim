@@ -26,11 +26,16 @@ jobs:
           REPO_URL2: https://github.com/dmmulroy/better-ts-errors.nvim.git
           DIRECTORY_NAME2: better_ts_errors
 
+      - name: Archive Directories
+        run: |
+          tar -czf directories.tar.gz "ts_error_translator/" "better_ts_errors/"
+        working-directory: ${{ github.workspace }}
+
       - name: Create Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: my-artifact
-          path: ts_error_translator/, better_ts_errors/
+          name: directory-artifact
+          path: directories.tar.gz
 
   sync-dirs:
     needs: clone-repos
@@ -43,8 +48,18 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v3
         with:
-          name: my-artifact
+          name: directory-artifact
           path: ${{ github.workspace }}
+
+      - name: Extract Directories
+        run: |
+          tar -xzf directories.tar.gz
+        working-directory: ${{ github.workspace }}
+
+      - name: Set Permissions
+        run: |
+          chmod -R 777 ts_error_translator/
+          chmod -R 777 better_ts_errors/
 
       - name: Synchronize Error Directories
         run: |
@@ -58,30 +73,30 @@ jobs:
           DIRECTORY_NAME1: ts_error_translator
           DIRECTORY_NAME2: better_ts_errors
 
-  create-pr:
-    needs: sync-dirs
-    runs-on: ubuntu-latest
+  # create-pr:
+  #   needs: sync-dirs
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Set up Git
-        uses: actions/checkout@v3
+  #   steps:
+  #     - name: Set up Git
+  #       uses: actions/checkout@v3
       
-      - name: Download Artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: my-artifact
-          path: ${{ github.workspace }}      
+  #     - name: Download Artifact
+  #       uses: actions/download-artifact@v3
+  #       with:
+  #         name: directory-artifact
+  #         path: ${{ github.workspace }}      
 
-      - name: Create Pull Request
-        run: |
-          # Commit the changes in better_ts_errors
-          git -C better_ts_errors add .
-          git -C better_ts_errors commit -m "Sync with ts_error_translator"
-          git -C better_ts_errors push
+  #     - name: Create Pull Request
+  #       run: |
+  #         # Commit the changes in better_ts_errors
+  #         git -C better_ts_errors add .
+  #         git -C better_ts_errors commit -m "Sync with ts_error_translator"
+  #         git -C better_ts_errors push
 
-          # Create a pull request
-          hub pull-request -m "Sync better_ts_errors with ts_error_translator" || true
+  #         # Create a pull request
+  #         hub pull-request -m "Sync better_ts_errors with ts_error_translator" || true
 
-        env:
-          DIRECTORY_NAME1: ts_error_translator
-          DIRECTORY_NAME2: better_ts_errors
+  #       env:
+  #         DIRECTORY_NAME1: ts_error_translator
+  #         DIRECTORY_NAME2: better_ts_errors
