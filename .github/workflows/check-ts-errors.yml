@@ -39,5 +39,21 @@ jobs:
         else
           echo "Differences found:"
           echo "$differences"
-          exit 1
+
+          # Create a branch and push the changes
+          git checkout -b branch-for-differences
+          git add .
+          git commit -m "Differences found"
+          git push origin branch-for-differences
+
+          # Create a pull request
+          curl -X POST -H "Authorization: token $GITHUB_TOKEN" -d '{
+            "title": "Differences Found",
+            "head": "branch-for-differences",
+            "base": "main",  # Adjust the target branch as needed
+            "body": "Differences were found between directories.",
+            "maintainer_can_modify": true
+          }' "https://api.github.com/repos/dmmulroy/better-ts-errors.nvim/pulls"
+          
+          exit 1  # Fail the workflow
         fi
