@@ -5,7 +5,18 @@ on:
       - km-main-change
       #- main <- Change before PR
   workflow_dispatch:
+
 jobs:
+  create-token:
+    runs-on: ubuntu-latest
+    steps:
+      - id: create_token
+        uses: tibdex/github-app-token@v2
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.PRIVATE_KEY }}
+      - run: "echo 'The created token is masked: ${{ steps.create_token.outputs.token }}'"
+
   sync-errors-and-create-pr:
     runs-on: ubuntu-latest
 
@@ -14,11 +25,12 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Sync Errors
-        uses: BetaHuhn/repo-file-sync-action@v1 #can change to latest
+        uses: BetaHuhn/repo-file-sync-action@v1
         with:
           sourceRepository: mattpocock/ts-error-translator
           sourceFolder: packages/engine/errors
           destinationFolder: error_templates
+          destinationToke: ${{ secrets.PRIVATE_KEY }}
 
       - name: Create PR
         id: create_pr
