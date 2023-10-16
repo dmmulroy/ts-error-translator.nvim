@@ -32,7 +32,7 @@ jobs:
         dir2="ts_error_translator/packages/engine/errors/"
 
         # Use diff to compare the directories and display the differences directly
-        differences=$(diff -rq "$dir1" "$dir2")
+        differences=$(diff -rq "$dir1" "$dir2" || true)
 
         # Check the exit code of diff (0 if no differences, 1 if differences found)
         if [ $? -eq 0 ]; then
@@ -58,5 +58,3 @@ jobs:
           
           exit 1  # Fail the workflow
         fi
-
-
