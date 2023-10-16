@@ -25,12 +25,8 @@ jobs:
       run: |
         ls better_ts_errors/error_templates
         ls ts_error_translator/packages/engine/errors/
-    
-    - name: Run the diff
-      shell: bash {0}
-      run: diff -r ts_error_translator/packages/engine/errors better_ts_errors/error_templates
 
-    - name: Compare Directories
+    - name: Compare Directories and Create PR
       run: |
         dir1="better_ts_errors/error_templates"
         dir2="ts_error_translator/packages/engine/errors/"
