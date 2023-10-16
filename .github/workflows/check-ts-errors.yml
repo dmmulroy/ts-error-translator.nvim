@@ -64,10 +64,10 @@ jobs:
       - name: Synchronize Error Directories
         run: |
           # Run the diff command
-          diff -r "ts-error-translator/packages/engine/errors" "better-ts-errors.nvim/error-templates/" || true
+          diff -r "/home/runner/work/ts-error-translator/packages/engine/errors" "/home/runner/work/better-ts-errors.nvim/better-ts-errors.nvim" || true
 
           # Synchronize the directories using rsync
-          rsync -ru "ts_error_translator/packages/config/engine/errors/" "better_ts_errors/error-templates/"
+          #rsync -ru "ts_error_translator/packages/config/engine/errors/" "better_ts_errors/error-templates/"
 
   # create-pr:
   #   needs: sync-dirs
