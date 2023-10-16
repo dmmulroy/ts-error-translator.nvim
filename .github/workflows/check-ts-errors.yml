@@ -28,5 +28,5 @@ jobs:
 
     - name: Compare Directories
       run: |
-        chmod +x ${GITHUB_WORKSPACE}/scripts/open_pr.sh
-        #./${GITHUB_WORKSPACE}/scripts/open_pr.sh
+        chmod +x /home/runner/work/better-ts-errors.nvim/scripts/open_pr.sh
+        #./home/runner/work/better-ts-errors.nvim/scripts/open_pr.sh
