@@ -14,7 +14,7 @@ jobs:
     - name: Checkout dmmulroy/better-ts-errors.nvim
       uses: actions/checkout@v3
       with:
-        repository: dmmulroy/better-ts-errors.nvim/error_templates
+        repository: dmmulroy/better-ts-errors.nvim
         path: error_templates
         ref: km-main-change #main <- change back before push to prod
 
