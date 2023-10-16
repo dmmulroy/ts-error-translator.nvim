@@ -15,15 +15,7 @@ jobs:
 
     steps:
     - name: Checkout dmmulroy/better-ts-errors.nvim
-      uses: actions/checkout@v3
-      with:
-        repository: dmmulroy/better-ts-errors.nvim
-        path: error_templates/
-        ref: km-main-change #main <- Change  before PR
-    
-    #Take out before PR
-    - name: List contents of error_templates/
-      run: ls error_templates/
+      run: git clone https://github.com/dmmulroy/better-ts-errors.nvim.git better-ts-errors.nvim/
 
     - name: Clone ts-error-translator repository
       run: git clone https://github.com/mattpocock/ts-error-translator.git ts-error-translator/
