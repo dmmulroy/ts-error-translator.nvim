@@ -22,7 +22,7 @@ jobs:
 
       - name: Create PR
         id: create_pr
-        uses: mshick/add-and-commit@v2
+        uses: EndBug/add-and-commit@v9
         with:
           default_branch: main # Change this to match your main branch
           branch_name: sync-errors-${{ github.run_id }}
