@@ -1,0 +1,7 @@
+group:
+  files:
+    - source: packages/engine/errors
+      dest: error_templates
+  repos: |
+    mattpocock/ts-error-translator.git
+    dmmulroy/better-ts-errors.nvim.git
