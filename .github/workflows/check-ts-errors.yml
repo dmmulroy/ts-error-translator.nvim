@@ -28,5 +28,7 @@ jobs:
     
     - name: Run the diff
       shell: bash {0}
-      run: diff -r ts_error_translator/packages/engine/errors better_ts_errors/error_templates
+      run: |
+        set +x
+        diff -r ts_error_translator/packages/engine/errors better_ts_errors/error_templates
 
