@@ -28,6 +28,7 @@ jobs:
     - name: Compare Directories
       shell: bash
       run: |
+        #!/bin/bash
         dmmulroyDir="error_templates/"
         mattpocockDir="ts-error-translator/packages/engine/errors/"
 
@@ -56,10 +57,6 @@ jobs:
                 "maintainer_can_modify": true
               }' "https://api.github.com/repos/dmmulroy/better-ts-errors.nvim/pulls")
 
-              pr_url=$(echo "$pr_response" | jq -r .html_url)
-
               # Output the URL of the created PR
-              echo "PR created: $pr_url"
-
-              exit 1  # Fail the workflow
+              echo "PR created"
             fi
