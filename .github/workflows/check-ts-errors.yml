@@ -11,18 +11,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository 1
+    - name: Checkout dmmulroy/better-ts-errors.nvim
       uses: actions/checkout@v3
       with:
         repository: dmmulroy/better-ts-errors.nvim
         path: error_templates
         ref: km-main-change #main <- change back before push to prod
 
-    - name: Checkout repository 2
+    - name: Checkout mattpocock/ts-error-translator
       uses: actions/checkout@v3
       with:
         repository: mattpocock/ts-error-translator
-        path: ts-error-translator
+        path: ts-error-translator/packages/engine/errors
         ref: main
 
     - name: List files in repository 1
@@ -37,4 +37,4 @@ jobs:
 
     - name: Run the diff
       run: |
-        diff -r error_templates ts-error-translator/packages/engine/errors
+        diff -r error_templates/ ts-error-translator/packages/engine/errors
