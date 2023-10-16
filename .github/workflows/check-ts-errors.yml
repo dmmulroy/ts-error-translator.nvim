@@ -26,6 +26,12 @@ jobs:
           REPO_URL2: https://github.com/dmmulroy/better-ts-errors.nvim.git
           DIRECTORY_NAME2: better_ts_errors
 
+      - name: Create Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: my-artifact
+          path: ts_error_translator/, better_ts_errors/
+
   sync-dirs:
     needs: clone-repos
     runs-on: ubuntu-latest
@@ -33,6 +39,12 @@ jobs:
     steps:
       - name: Set up Git
         uses: actions/checkout@v3
+      
+      - name: Download Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: my-artifact
+          path: ${{ github.workspace }}
 
       - name: Synchronize Error Directories
         run: |
@@ -53,14 +65,18 @@ jobs:
     steps:
       - name: Set up Git
         uses: actions/checkout@v3
+      
+      - name: Download Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: my-artifact
+          path: ${{ github.workspace }}      
 
       - name: Create Pull Request
         run: |
           # Commit the changes in better_ts_errors
           git -C better_ts_errors add .
           git -C better_ts_errors commit -m "Sync with ts_error_translator"
-
-          # Push the changes to the repository
           git -C better_ts_errors push
 
           # Create a pull request
