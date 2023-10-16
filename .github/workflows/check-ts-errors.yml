@@ -6,17 +6,7 @@ on:
       #- main <- Change before PR
   workflow_dispatch:
 
-jobs:
-  create-token:
-    runs-on: ubuntu-latest
-    steps:
-      - id: create_token
-        uses: tibdex/github-app-token@v2
-        with:
-          app_id: ${{ secrets.APP_ID }}
-          private_key: ${{ secrets.PRIVATE_KEY }}
-      - run: "echo 'The created token is masked: ${{ steps.create_token.outputs.token }}'"
-
+jobs:     
   sync-errors-and-create-pr:
     runs-on: ubuntu-latest
 
@@ -30,7 +20,7 @@ jobs:
           sourceRepository: mattpocock/ts-error-translator
           sourceFolder: packages/engine/errors
           destinationFolder: error_templates
-          destinationToke: ${{ secrets.PRIVATE_KEY }}
+          destinationToke: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create PR
         id: create_pr
