@@ -37,6 +37,7 @@ jobs:
         if [ $? -eq 0 ]; then
           echo "No differences found."
         else
-          echo "Differences found. See directory_diff.txt for details."
-          cat directory_diff.txt
+          echo "Differences found:"
+          echo "$differences"
+          exit 1
         fi
