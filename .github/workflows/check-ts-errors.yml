@@ -4,10 +4,10 @@ on:
   push:
     branches:
       - km-main-change
-      #- main
+      #- main <- Change before PR
 
 jobs:
-  compare:
+  Compare:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,17 +16,27 @@ jobs:
       with:
         repository: dmmulroy/better-ts-errors.nvim
         path: error_templates/
-        ref: km-main-change #main <- change back before push to prod
+        ref: km-main-change #main <- Change  before PR
+    
+    #Take out before PR
+    - name: List contents of error_templates/
+      run: ls error_templates/
 
-    # - name: Clone and checkout remote repository
-    #   run: |
-    #     git clone https://github.com/mattpocock/ts-error-translator.git
-    #     cd ts-error-translator
-    #     git checkout main
-    #     cd packages/engine/errors
-    #   working-directory: ${{ github.workspace }}
+    - name: Clone ts-error-translator repository
+      run: git clone https://github.com/mattpocock/ts-error-translator.git ts-error-translator/
 
-    # - name: Run the diff
-    #   run: |
-    #     diff -r packages/engine/errors ${{ github.workspace }}/error_templates
-    #   working-directory: ${{ github.workspace }}/ts-error-translator
+    - name: Compare Directories
+      run: |
+        dmmulroyDir="error_templates/"
+        mattpocockDir="ts-error-translator/packages/engine/errors/"
+        
+        # Use diff to compare the directories and store the output in a file
+        diff -rq "$dmmulroyDir" "$mattpocockDir" > directory_diff.txt
+
+        # Check the exit code of diff (0 if no differences, 1 if differences found)
+        if [ $? -eq 0 ]; then
+          echo "No differences found."
+        else
+          echo "Differences found. See directory_diff.txt for details."
+          cat directory_diff.txt
+        fi
