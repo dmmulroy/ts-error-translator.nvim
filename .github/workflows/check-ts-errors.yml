@@ -26,7 +26,7 @@ jobs:
     - name: get path
       run: pwd
 
-    # - name: Compare Directories
-    #   run: |
-    #     chmod +x ${GITHUB_WORKSPACE}/scripts/open_pr.sh
-    #     #./${GITHUB_WORKSPACE}/scripts/open_pr.sh
+    - name: Compare Directories
+      run: |
+        chmod +x ${GITHUB_WORKSPACE}/scripts/open_pr.sh
+        #./${GITHUB_WORKSPACE}/scripts/open_pr.sh

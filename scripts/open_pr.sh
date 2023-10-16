@@ -1,5 +1,5 @@
 #!/bin/bash
-dmmulroyDir="error_templates/"
+dmmulroyDir="better-ts-errors.nvim/error_templates/"
 mattpocockDir="ts-error-translator/packages/engine/errors/"
 
 # Use diff to compare the directories and store the output in a file
