@@ -60,6 +60,8 @@ jobs:
       - name: Synchronize Error Directories
         run: |
           # Run the diff command
+          l\s -lah
+          pwd
           diff -r "better_ts_errors/error_templates" "ts_error_translator/packages/engine/errors"
 
           # Synchronize the directories using rsync
