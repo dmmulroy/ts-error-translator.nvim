@@ -15,15 +15,15 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Clone Repository 1
-        run: git clone ${{ secrets.REPO_URL1 }} ts_error_translator/
+        run: git clone $REPO_URL1 ts_error_translator/
         env:
-          REPO_URL1: ${{ secrets.REPO_URL1 }}
+          REPO_URL1: $REPO_URL1
           DIRECTORY_NAME1: ts_error_translator
 
       - name: Clone Repository 2
-        run: git clone ${{ secrets.REPO_URL2 }} better_ts_errors/
+        run: git clone $REPO_URL2 better_ts_errors/
         env:
-          REPO_URL2: ${{ secrets.REPO_URL2 }}
+          REPO_URL2: $REPO_URL2
           DIRECTORY_NAME2: better_ts_errors
 
   compare-dirs:
