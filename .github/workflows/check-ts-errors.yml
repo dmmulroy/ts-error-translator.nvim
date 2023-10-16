@@ -46,7 +46,7 @@ jobs:
           DIRECTORY_NAME1: ts_error_translator
           DIRECTORY_NAME2: better_ts_errors
 
-   create-pr:
+  create-pr:
     needs: sync-dirs
     runs-on: ubuntu-latest
 
