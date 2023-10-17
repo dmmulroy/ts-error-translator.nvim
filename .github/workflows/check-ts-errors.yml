@@ -19,8 +19,7 @@ jobs:
 
     - name: List contents of error_templates/ and errors
       run: |
-        ls
-        # ls better-ts-errors.nvim/error_templates/
+        ls better-ts-errors.nvim
         # ls ts-error-translator/packages/engine/errors/
 
     - name: Compare Directories and Create PR
