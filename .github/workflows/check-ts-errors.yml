@@ -11,20 +11,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout dmmulroy/better-ts-errors.nvim
+    - name: Clone dmmulroy/better-ts-errors.nvim
       run: git clone https://github.com/dmmulroy/better-ts-errors.nvim.git
-      # with:
-      #   repository: dmmulroy/better-ts-errors.nvim
-      #   path: better_ts_errors/
-      #   ref: km-main-change #main <- change back before push to prod
 
-    - name: Clone ts-error-translator repository
+    - name: Clone mattpocock/ts-error-translator repository
       run: git clone https://github.com/mattpocock/ts-error-translator.git
 
     - name: List contents of error_templates/ and errors
       run: |
-        ls better-ts-errors.nvim/error_templates/
-        ls ts-error-translator/packages/engine/errors/
+        ls
+        # ls better-ts-errors.nvim/error_templates/
+        # ls ts-error-translator/packages/engine/errors/
 
     - name: Compare Directories and Create PR
       run: |
