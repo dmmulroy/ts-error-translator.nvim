@@ -19,7 +19,7 @@ jobs:
       #   ref: km-main-change #main <- change back before push to prod
 
     - name: Clone ts-error-translator repository
-      run: git clone https://github.com/mattpocock/ts-error-translator.git ts_error_translator/
+      run: git clone https://github.com/mattpocock/ts-error-translator.git
 
     # - name: List contents of error_templates/ and errors
     #   run: |
@@ -29,8 +29,8 @@ jobs:
     - name: Compare Directories and Create PR
       run: |
         repository="dmmurloy/better-ts-errors.nvim"
-        dir1="ts_error_translator/packages/engine/errors/"
-        dir2="better_ts_errors/error_templates"
+        dir1="ts-error-translator/packages/engine/errors/"
+        dir2="better-ts-errors.nvim/error_templates"
 
         differences=$(diff -rq "$dir1" "$dir2" || true)
 
