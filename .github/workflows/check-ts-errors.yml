@@ -21,10 +21,10 @@ jobs:
     - name: Clone ts-error-translator repository
       run: git clone https://github.com/mattpocock/ts-error-translator.git
 
-    # - name: List contents of error_templates/ and errors
-    #   run: |
-    #     ls better_ts_errors/error_templates
-    #     ls ts_error_translator/packages/engine/errors/
+    - name: List contents of error_templates/ and errors
+      run: |
+        ls better-ts-errors.nvim/error_templates/
+        ls ts-error-translator/packages/engine/errors/
 
     - name: Compare Directories and Create PR
       run: |
