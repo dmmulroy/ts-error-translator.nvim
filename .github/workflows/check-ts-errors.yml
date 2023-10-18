@@ -16,12 +16,9 @@ jobs:
     - name: Clone mattpocock/ts-error-translator repository
       run: git clone https://github.com/mattpocock/ts-error-translator.git
 
-    # - name: Set up git
-    #   uses: oleksiyrudenko/gha-git-credentials@v2-latest
-    #   with:
-    #     token: '${{ secrets.GITHUB_TOKEN }}'
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - run: |
+       git config --global user.email "you@example.com"
+       git config --global user.name "Your Name"
 
     - name: Run diff script and create PR
       run: |
