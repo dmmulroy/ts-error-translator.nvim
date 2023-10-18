@@ -29,8 +29,8 @@ jobs:
     - name: Run diff script and create PR
       run: |
         # Define your directories and GitHub token here
-        dir1="ts_error_translator/packages/engine/errors/"
-        dir2="better_ts_errors/error_templates"
+        dir1="ts-error-translator/packages/engine/errors/"
+        dir2="better-ts-errors/error_templates"
         github_token="${{ secrets.GITHUB_TOKEN }}"
 
         # Use diff to compare the directories and store the differences in a variable
