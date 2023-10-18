@@ -26,28 +26,35 @@ jobs:
     #     ls "better-ts-errors.nvim/error_templates"
     #     ls "ts-error-translator/packages/engine/errors"
 
-    - name: Compare Directories and Create PR
+    - name: Run diff script and create PR
       run: |
-        TITLE="Syncing error templates"
-        BODY="Auto PR that's created to sync the error templates."
-        BASE="main"
-        dir1="ts-error-translator/packages/engine/errors/"
-        dir2="better-ts-errors.nvim/error_templates/"
+        # Define your directories and GitHub token here
+        dir1="ts_error_translator/packages/engine/errors/"
+        dir2="better_ts_errors/error_templates"
         github_token="${{ secrets.GITHUB_TOKEN }}"
 
         # Use diff to compare the directories and store the differences in a variable
         differences=$(diff -rq $dir1 $dir2 || true)
 
         if [ -n "$differences" ]; then
-            # Create the pull request
-            data='{"title": "'$TITLE'", "body": "'$BODY'", "head": "feature-branch", "base": "'$BASE'"}'}
+          # Create a new branch and commit the changes
+          branch_name="auto-pr-$(date +”%d-%b-%Y”)"
+          git checkout -b "$branch_name"
+          git add -A
+          git commit -m "Auto commit for directory differences"
+          git push origin "$branch_name"
 
-            curl -X POST "https://api.github.com/repos/dmmulroy/better-ts-errors.nvim/pulls" \
-              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-              -d "$data"
-        else
-            echo "No differences found in directories."
-        fi
+          # Create a new pull request using the GitHub API
+          pull_request_title="Auto PR: Directory Differences"
+          pull_request_body="Differences found between directories: $dir1 and $dir2\n\n$differences"
+          pull_request_head="$branch_name"
+          pull_request_base="main"  # Change this to your target branch
+
+          response=$(curl -s -X POST "https://api.github.com/repos/$GITHUB_REPOSITORY/pulls" -H "Authorization: token $github_token" -d '{
+            "title": "'${pull_request_title}'",
+            "body": "'${pull_request_body}'",
+            "head": "'${pull_request_head}'",
+            "base": "'${pull_request_base}'"
+          }')
       env:
-        TITLE: Your Pull Request Title
-        BODY: Your Pull Request Description
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
