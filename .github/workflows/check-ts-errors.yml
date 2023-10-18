@@ -32,8 +32,8 @@ jobs:
         TITLE="Syncing error templates"
         BODY="Auto PR that's created to sync the error templates."
         BASE="main"
-        dir1="ts_error_translator/packages/engine/errors/"
-        dir2="better_ts_errors/error_templates"
+        dir1="ts-error-translator/packages/engine/errors/"
+        dir2="better-ts-errors.nvim/error_templates"
         github_token="${{ secrets.GITHUB_TOKEN }}"
 
         # Use diff to compare the directories and store the differences in a variable
