@@ -10,7 +10,6 @@ jobs:
    Compare-Directories:
     runs-on: ubuntu-latest
     steps:
-    - uses: fregante/setup-git-user@v1
     - name: Clone dmmulroy/better-ts-errors.nvim
       run: git clone https://github.com/dmmulroy/better-ts-errors.nvim.git
 
