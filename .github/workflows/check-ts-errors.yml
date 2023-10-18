@@ -17,10 +17,10 @@ jobs:
     - name: Clone mattpocock/ts-error-translator repository
       run: git clone https://github.com/mattpocock/ts-error-translator.git
 
-    - name: List contents of error_templates/ and errors
-      run: |
-        ls "better-ts-errors.nvim/error_templates"
-        ls "ts-error-translator/packages/engine/errors"
+    # - name: List contents of error_templates/ and errors
+    #   run: |
+    #     ls "better-ts-errors.nvim/error_templates"
+    #     ls "ts-error-translator/packages/engine/errors"
 
     - name: Compare Directories and Create PR
       run: |
@@ -32,6 +32,7 @@ jobs:
 
         if [ -n "$differences" ]; then
           branch_name="auto-pr-$(date +%s)"
+          cd better-ts-errors.nvim/
           git checkout -b "$branch_name"
           git add -A
           git commit -m "Auto commit for directory sync"
