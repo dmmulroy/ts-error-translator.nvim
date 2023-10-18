@@ -42,7 +42,7 @@ jobs:
           pull_request_head="$branch_name"
           pull_request_base="main"
 
-          response=$(curl -s -X POST "https://api.github.com/repos/$repository/pulls" -H "Authorization: token $GITHUB_TOKEN" -d '{
+          response=$(curl -s -X POST "https://api.github.com/repos/$repository/pulls" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -d '{
             "title": "'"${pull_request_title}"'",
             "body": "'"${pull_request_body}"'",
             "head": "'"${pull_request_head}"'",
