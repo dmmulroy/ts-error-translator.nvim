@@ -44,7 +44,7 @@ jobs:
           git push origin "$branch_name"
 
           # Create a new pull request using the GitHub API
-          curl -s -X POST "https://api.github.com/repos/dmmulroy/better-ts-errors.nvim/pulls" -H "Authorization: Bearer $github_token" -d '{
+          curl -X POST "https://api.github.com/repos/dmmulroy/better-ts-errors.nvim/pulls" -d '{
             "title": "Auto PR: Directory Differences",
             "body": "Differences found between directories: '"$dir1"' and '"$dir2"'\n\n'"$differences"'",
             "head": "'"$branch_name"'",
