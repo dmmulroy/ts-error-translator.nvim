@@ -29,33 +29,30 @@ jobs:
 
     - name: Compare Directories and Create PR
       run: |
-        repository="dmmurloy/better-ts-errors.nvim"
-        dir1="ts-error-translator/packages/engine/errors/"
-        dir2="better-ts-errors.nvim/error_templates"
+        TITLE="Syncing error templates"
+        BODY="Auto PR that's created to synch the error templates."
+        BASE="main"  # The base branch you want to create the PR against
 
-        differences=$(diff -rq "$dir1" "$dir2" || true)
+        # Create the pull request
+        PR_RESPONSE=$(curl -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -d '{
+            "title": "'"$TITLE"'",
+            "body": "'"$BODY"'",
+            "head": "feature-branch",
+            "base": "'"$BASE"'"
+            }' \
+            "https://api.github.com/repos/dmmulroy/better-ts-errors.nvim/pulls")
 
-        if [ -n "$differences" ]; then
-          branch_name="auto-pr-$(date +%s)"
-          cd better-ts-errors.nvim/
-          git checkout -b "$branch_name"
-          git add -A
-          git commit -m "Auto commit for directory sync"
-          git push origin "$branch_name"
+        # Add the reviewer to the PR
+        REVIEWER="dmmulroy"
+        curl -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -d '{
+            "reviewers": ["'"$REVIEWER"'"]
+            }' \
+            "https://api.github.com/repos/dmmulroy/better-ts-errors.nvim/pulls/$PR_NUMBER/requested_reviewers"
 
-          pull_request_title="Auto PR: Directory Sync"
-          pull_request_body="Differences found between directories: $dir1 and $dir2\n\n$differences"
-          pull_request_head="$branch_name"
-          pull_request_base="main"
-
-          response=$(curl -s -X POST "https://api.github.com/repos/$repository/pulls" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -d '{
-            "title": "'"${pull_request_title}"'",
-            "body": "'"${pull_request_body}"'",
-            "head": "'"${pull_request_head}"'",
-            "base": "'"${pull_request_base}"'"
-          }')
-
-          echo "Pull request created": $pull_request_url""
         else
           echo "No differences found in directories."
         fi
