@@ -16,9 +16,10 @@ jobs:
     - name: Clone mattpocock/ts-error-translator repository
       run: git clone https://github.com/mattpocock/ts-error-translator.git
 
-    # - run: |
-    #    git config --global user.email "you@example.com"
-    #    git config --global user.name "Your Name"
+    - name: run config git
+      run: |
+        git config --global user.email "email@test.com"
+        git config --global user.name "kyle melvin"
 
     - name: Run diff script and create PR
       run: |
