@@ -19,7 +19,7 @@ jobs:
     - name: run config git
       run: |
         git config --global user.email "email@test.com"
-        git config --global user.name "kyle melvin"
+        git config --global user.name "kylemelvin95"
 
     - name: Run diff script and create PR
       run: |
