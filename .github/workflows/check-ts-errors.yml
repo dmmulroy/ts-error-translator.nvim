@@ -52,7 +52,7 @@ jobs:
           pull_request_head="$branch_name"
           pull_request_base="main"  # Change this to your target branch
 
-          response=$(curl -s -X POST "https://api.github.com/repos/$GITHUB_REPOSITORY/pulls" -H "Authorization: token $github_token" -d '{
+          response=$(curl -s -X POST "https://api.github.com/repos/$GITHUB_REPOSITORY/pulls" -H "Authorization: Bearer $GITHUB_TOKEN" -d '{
             "title": "'${pull_request_title}'",
             "body": "'${pull_request_body}'",
             "head": "'${pull_request_head}'",
