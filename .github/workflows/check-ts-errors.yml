@@ -17,6 +17,11 @@ jobs:
     - name: Clone mattpocock/ts-error-translator repository
       run: git clone https://github.com/mattpocock/ts-error-translator.git
 
+    - name: Set up git
+      run: |
+        git config --global user.email "actions@github.com"
+        git config --global user.name "GitHub Actions"
+
     # - name: List contents of error_templates/ and errors
     #   run: |
     #     ls "better-ts-errors.nvim/error_templates"
