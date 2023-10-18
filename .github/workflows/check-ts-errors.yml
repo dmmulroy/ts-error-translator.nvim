@@ -56,5 +56,6 @@ jobs:
             "head": "'${pull_request_head}'",
             "base": "'${pull_request_base}'"
           }')
+        fi
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
