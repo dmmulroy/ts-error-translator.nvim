@@ -7,7 +7,7 @@ on:
       #- main
 
 jobs:
-  Compare:
+   Compare-Directories:
     runs-on: ubuntu-latest
     steps:
     - name: Clone dmmulroy/better-ts-errors.nvim
@@ -25,7 +25,6 @@ jobs:
         # Define your directories and GitHub token here
         dir1="ts-error-translator/packages/engine/errors/"
         dir2="better-ts-errors.nvim/error_templates"
-        github_token="${{ secrets.GITHUB_TOKEN }}"
 
         # Use diff to compare the directories and store the differences in a variable
         differences=$(diff -rq $dir1 $dir2 || true)
