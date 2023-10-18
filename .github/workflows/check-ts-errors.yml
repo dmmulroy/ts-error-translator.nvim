@@ -49,7 +49,7 @@ jobs:
             "body": "Differences found between directories: '"$dir1"' and '"$dir2"'\n\n'"$differences"'",
             "head": "'"$branch_name"'",
             "base": "main"
-          }
+          }'
         fi
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
