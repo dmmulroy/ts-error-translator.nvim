@@ -42,7 +42,7 @@ jobs:
         if [ -n "$differences" ]; then
             # Create the pull request
             PR_RESPONSE=$(curl -X POST \
-                -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                -H "Authorization:token ${{ secrets.GITHUB_TOKEN }}" \
                 -d '{
                     "title": "'$TITLE'",
                     "body": "'$BODY'",
@@ -54,7 +54,7 @@ jobs:
             # Add the reviewer to the PR
             REVIEWER="dmmulroy"
             curl -X POST \
-                -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                -H "Authorization:token ${{ secrets.GITHUB_TOKEN }}" \
                 -d '{
                     "reviewers": ["'"$REVIEWER"'"]
                 }' \
