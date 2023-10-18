@@ -41,24 +41,12 @@ jobs:
 
         if [ -n "$differences" ]; then
             # Create the pull request
-            PR_RESPONSE=$(curl -X POST \
-                -H "Authorization:token ${{ secrets.GITHUB_TOKEN }}" \
-                -d '{
-                    "title": "'$TITLE'",
-                    "body": "'$BODY'",
-                    "head": "feature-branch",
-                    "base": "'$BASE'"
-                }' \
-                "https://api.github.com/repos/dmmulroy/better-ts-errors.nvim/pulls")
+            curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -d '{"title": "'"$TITLE"'", "body": "'"$BODY"'", "head": "feature-branch", "base": "'"$BASE"'"}' "https://api.github.com/repos/repo-owner/repo-name/pulls"
 
             # Add the reviewer to the PR
             REVIEWER="dmmulroy"
-            curl -X POST \
-                -H "Authorization:token ${{ secrets.GITHUB_TOKEN }}" \
-                -d '{
-                    "reviewers": ["'"$REVIEWER"'"]
-                }' \
-                "https://api.github.com/repos/dmmulroy/better-ts-errors.nvim/pulls/$PR_NUMBER/requested_reviewers"
+            curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -d '{"reviewers": ["dmmulroy"]}' "https://api.github.com/repos/repo-owner/repo-name/pulls/$PR_NUMBER/requested_reviewers"
+
         else
             echo "No differences found in directories."
         fi
