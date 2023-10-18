@@ -16,9 +16,9 @@ jobs:
     - name: Clone mattpocock/ts-error-translator repository
       run: git clone https://github.com/mattpocock/ts-error-translator.git
 
-    - run: |
-       git config --global user.email "you@example.com"
-       git config --global user.name "Your Name"
+    # - run: |
+    #    git config --global user.email "you@example.com"
+    #    git config --global user.name "Your Name"
 
     - name: Run diff script and create PR
       run: |
@@ -40,7 +40,7 @@ jobs:
           git push origin "$branch_name"
 
           # Create a new pull request using the GitHub API
-          curl -X POST "https://api.github.com/repos/dmmulroy/better-ts-errors.nvim/pulls" -d '{
+          curl -X POST "https://api.github.com/repos/dmmulroy/better-ts-errors.nvim/pulls" -H ${{ secrets.GITHUB_TOKEN }} -d '{
             "title": "Auto PR: Directory Differences",
             "body": "Differences found between directories: '"$dir1"' and '"$dir2"'\n\n'"$differences"'",
             "head": "'"$branch_name"'",
