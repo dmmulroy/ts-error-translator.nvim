@@ -9,7 +9,6 @@ on:
 jobs:
   Compare:
     runs-on: ubuntu-latest
-
     steps:
     - name: Clone dmmulroy/better-ts-errors.nvim
       run: git clone https://github.com/dmmulroy/better-ts-errors.nvim.git
@@ -33,7 +32,7 @@ jobs:
         BODY="Auto PR that's created to sync the error templates."
         BASE="main"
         dir1="ts-error-translator/packages/engine/errors/"
-        dir2="better-ts-errors.nvim/error_templates"
+        dir2="better-ts-errors.nvim/error_templates/"
         github_token="${{ secrets.GITHUB_TOKEN }}"
 
         # Use diff to compare the directories and store the differences in a variable
@@ -41,12 +40,14 @@ jobs:
 
         if [ -n "$differences" ]; then
             # Create the pull request
-            curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -d '{"title": "'"$TITLE"'", "body": "'"$BODY"'", "head": "feature-branch", "base": "'"$BASE"'"}' "https://api.github.com/repos/repo-owner/repo-name/pulls"
+            data='{"title": "'$TITLE'", "body": "'$BODY'", "head": "feature-branch", "base": "'$BASE'"}'}
 
-            # Add the reviewer to the PR
-            REVIEWER="dmmulroy"
-            curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -d '{"reviewers": ["dmmulroy"]}' "https://api.github.com/repos/repo-owner/repo-name/pulls/$PR_NUMBER/requested_reviewers"
-
+            curl -X POST "https://api.github.com/repos/dmmulroy/better-ts-errors.nvim/pulls" \
+              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              -d "$data"
         else
             echo "No differences found in directories."
         fi
+      env:
+        TITLE: Your Pull Request Title
+        BODY: Your Pull Request Description
