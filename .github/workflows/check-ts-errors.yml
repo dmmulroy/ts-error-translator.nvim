@@ -41,7 +41,7 @@ jobs:
           # Create a new branch and commit the changes
           branch_name="auto-pr-$(date +”%d-%b-%Y”)"
           git checkout -b "$branch_name"
-          diff_result=$(diff -ru "$dir1" "$dir2")
+          diff_result=$(diff -rq $dir1 $dir2 || true)
           echo "$diff_result" > differences.patch
           git add differences.patch
           git commit -m "Auto commit for directory differences"
