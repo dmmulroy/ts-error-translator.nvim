@@ -20,6 +20,8 @@ jobs:
       run: |
         git config --global user.email "actions@github.com"
         git config --global user.name "GitHub Actions"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Run diff script and create PR
       run: |
@@ -42,7 +44,7 @@ jobs:
           git push origin "$branch_name"
 
           # Create a new pull request using the GitHub API
-          response=$(curl -s -X POST "https://api.github.com/repos/dmmulroy/better-ts-errors.nvim/pulls" -H "Authorization: Bearer $GITHUB_TOKEN" -d '{
+          response=$(curl -s -X POST "https://api.github.com/repos/dmmulroy/better-ts-errors.nvim/pulls" -H "Authorization: Bearer $github_token" -d '{
             "title": "Auto PR: Directory Differences",
             "body": "Differences found between directories: $dir1 and $dir2\n\n$differences",
             "head": "$branch_name",
