@@ -10,6 +10,7 @@ jobs:
    Compare-Directories:
     runs-on: ubuntu-latest
     steps:
+    - uses: fregante/setup-git-user@v1
     - name: Clone dmmulroy/better-ts-errors.nvim
       run: git clone https://github.com/dmmulroy/better-ts-errors.nvim.git
 
@@ -18,8 +19,8 @@ jobs:
 
     - name: run config git
       run: |
-        git config --global user.email "email@test.com"
-        git config --global user.name "kylemelvin95"
+        git config --local user.email "4github-actions@users.noreply.github.com"
+        git config --local user.name "github-actions"
 
     - name: Run diff script and create PR
       run: |
