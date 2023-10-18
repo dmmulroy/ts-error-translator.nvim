@@ -30,29 +30,35 @@ jobs:
     - name: Compare Directories and Create PR
       run: |
         TITLE="Syncing error templates"
-        BODY="Auto PR that's created to synch the error templates."
-        BASE="main"  # The base branch you want to create the PR against
+        BODY="Auto PR that's created to sync the error templates."
+        BASE="main"
+        dir1="ts_error_translator/packages/engine/errors/"
+        dir2="better_ts_errors/error_templates"
+        github_token="${{ secrets.GITHUB_TOKEN }}"
 
-        # Create the pull request
-        PR_RESPONSE=$(curl -X POST \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -d '{
-            "title": "'"$TITLE"'",
-            "body": "'"$BODY"'",
-            "head": "feature-branch",
-            "base": "'"$BASE"'"
-            }' \
-            "https://api.github.com/repos/dmmulroy/better-ts-errors.nvim/pulls")
+        # Use diff to compare the directories and store the differences in a variable
+        differences=$(diff -rq "$dir1" "$dir2" || true)
 
-        # Add the reviewer to the PR
-        REVIEWER="dmmulroy"
-        curl -X POST \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -d '{
-            "reviewers": ["'"$REVIEWER"'"]
-            }' \
-            "https://api.github.com/repos/dmmulroy/better-ts-errors.nvim/pulls/$PR_NUMBER/requested_reviewers"
+        if [ -n "$differences" ]; then
+            # Create the pull request
+            PR_RESPONSE=$(curl -X POST \
+                -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                -d '{
+                    "title": "'"$TITLE"'",
+                    "body": "'"$BODY"'",
+                    "head": "feature-branch",
+                    "base": "'"$BASE"'"
+                }' \
+                "https://api.github.com/repos/dmmulroy/better-ts-errors.nvim/pulls")
 
+            # Add the reviewer to the PR
+            REVIEWER="dmmulroy"
+            curl -X POST \
+                -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                -d '{
+                    "reviewers": ["'"$REVIEWER"'"]
+                }' \
+                "https://api.github.com/repos/dmmulroy/better-ts-errors.nvim/pulls/$PR_NUMBER/requested_reviewers"
         else
-          echo "No differences found in directories."
+            echo "No differences found in directories."
         fi
