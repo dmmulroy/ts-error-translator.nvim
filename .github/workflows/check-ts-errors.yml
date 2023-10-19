@@ -10,16 +10,21 @@ jobs:
    Compare-Directories:
     runs-on: ubuntu-latest
     steps:
-    - name: Clone dmmulroy/better-ts-errors.nvim
-      run: git clone https://github.com/dmmulroy/better-ts-errors.nvim.git
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        path: km-main-change #Change back to main before PR
 
-    - name: Clone mattpocock/ts-error-translator repository
-      run: git clone https://github.com/mattpocock/ts-error-translator.git
+    - name: Checkout tools repo
+      uses: actions/checkout@v4
+      with:
+        repository: mattpocock/ts-error-translator
+        path: main
 
     - name: run config git
       run: |
-        git config --global user.email "4github-actions@users.noreply.github.com"
-        git config --global user.name "github-actions"
+        git config --global user.email "github-actions@github.com"
+        git config --global user.name "githyub-actions"
 
     - name: Run diff script and create PR
       run: |
@@ -41,18 +46,14 @@ jobs:
           git push origin "$branch_name"
         fi
 
+    - name: Commit files
+      run: |
+        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git commit -a -m "Add changes"
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: ${{ github.ref }}  
-        #   # Create a new pull request using the GitHub API
-        #   curl -X POST "https://api.github.com/repos/dmmulroy/better-ts-errors.nvim/pulls" -H ${{ secrets.GITHUB_TOKEN }} -d '{
-        #     "title": "Auto PR: Directory Differences",
-        #     "body": "Differences found between directories: '"$dir1"' and '"$dir2"'\n\n'"$differences"'",
-        #     "head": "'"$branch_name"'",
-        #     "base": "main"
-        #   }'
-        # fi
-      env:
+        branch: ${{ github.ref }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
