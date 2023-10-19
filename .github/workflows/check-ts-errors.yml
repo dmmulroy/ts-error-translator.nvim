@@ -35,13 +35,13 @@ jobs:
         differences=$(diff -rq $dir1 $dir2 || true)
         echo $differences
 
-    #     if [ -n "$differences" ]; then
-    #       cd better-ts-errors.nvim/
-    #       # Create a new branch and commit the changes
-    #       branch_name="auto-pr-$(date +”%d-%b-%Y”)"
-    #       git checkout -b "$branch_name"
-    #       echo $differences > differences.patch
-    #       git add differences.patch
-    #       git commit -m "Auto commit for directory differences"
-    #       git push origin "$branch_name"
-    #     fi
+        if [ -n "$differences" ]; then
+          cd better-ts-errors.nvim/
+          # Create a new branch and commit the changes
+          branch_name="auto-pr-$(date +”%d-%b-%Y”)"
+          git checkout -b "$branch_name"
+          echo $differences > differences.patch
+          git add differences.patch
+          git commit -m "Auto commit for directory differences"
+          git push origin "$branch_name"
+        fi
