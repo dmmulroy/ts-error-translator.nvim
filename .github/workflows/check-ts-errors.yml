@@ -45,5 +45,5 @@ jobs:
           git commit -m "Auto commit for directory differences"
           git push origin "$branch_name"
         fi
-      with: 
-        token: ${{ secrets.GITHUB_TOKEN }}
+      env: 
+        GITHUB_TOKEN: ${{ github.token }}
