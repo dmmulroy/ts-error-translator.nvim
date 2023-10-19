@@ -26,22 +26,22 @@ jobs:
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
 
-    # - name: Run diff script and create PR
-    #   run: |
-    #     # Define your directories and GitHub token here
-    #     dir1="ts-error-translator/packages/engine/errors/"
-    #     dir2="better-ts-errors.nvim/error_templates"
+    - name: Run diff script and create PR
+      run: |
+        # Define your directories and GitHub token here
+        dir1="ts-error-translator/packages/engine/errors/"
+        dir2="better-ts-errors.nvim/error_templates"
 
-    #     # Use diff to compare the directories and store the differences in a variable
-    #     differences=$(diff -rq $dir1 $dir2 || true)
+        # Use diff to compare the directories and store the differences in a variable
+        differences=$(diff -rq $dir1 $dir2 || true)
 
-    #     if [ -n "$differences" ]; then
-    #       cd better-ts-errors.nvim/
-    #       # Create a new branch and commit the changes
-    #       branch_name="auto-pr-$(date +”%d-%b-%Y”)"
-    #       git checkout -b "$branch_name"
-    #       echo $differences > differences.patch
-    #       git add differences.patch
-    #       git commit -m "Auto commit for directory differences"
-    #       git push origin "$branch_name"
-    #     fi
+        if [ -n "$differences" ]; then
+          cd better-ts-errors.nvim/
+          # Create a new branch and commit the changes
+          branch_name="auto-pr-$(date +”%d-%b-%Y”)"
+          git checkout -b "$branch_name"
+          echo $differences > differences.patch
+          git add differences.patch
+          git commit -m "Auto commit for directory differences"
+          git push origin "$branch_name"
+        fi
