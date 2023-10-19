@@ -27,7 +27,7 @@ jobs:
         pwd
         #ls https://github.com/mattpocock/ts-error-translator
 
-   ` # - name: Run diff script and create PR
+    # - name: Run diff script and create PR
     #   run: |
     #     # Define your directories and GitHub token here
     #     dir1="ts-error-translator/packages/engine/errors/"
