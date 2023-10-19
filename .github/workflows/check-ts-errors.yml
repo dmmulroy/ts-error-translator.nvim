@@ -11,21 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - name: Configure Git 
+    - name: git config
       run: |
-        echo "machine github.com login kylemelivn95 password ${GH_TOKEN}" > ~/.netrc
-        git config --global url."https://github.com/".insteadOf "git://github.com/"
-        git config --global advice.detachedHead false
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
-      env:
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
-      
-    # - name: git config
-    #   run: |
-    #     git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-    #     git config --global user.name "github-actions[bot]"
-    #     git config --global url."https://github.com/".insteadOf "git://github.com/"
+        git config --global url."https://github.com/".insteadOf "git://github.com/"
 
     - name: Clone Repo's
       run: |
@@ -56,4 +46,4 @@ jobs:
           git push origin "$branch_name"
         fi
       env: 
-        GITHUB_TOKEN: ${{ github.token }}
+        GITHUB_TOKEN: ${{ TOKEN }}
