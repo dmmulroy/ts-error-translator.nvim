@@ -13,9 +13,9 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
       with:
-        path: km-main-change #Change back to main before PR
+        path: main #Change back to main before PR
 
-    - name: Checkout tools repo
+    - name: Checkout ts-error-translator
       uses: actions/checkout@v4
       with:
         repository: mattpocock/ts-error-translator
