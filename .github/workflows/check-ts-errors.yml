@@ -21,11 +21,16 @@ jobs:
       run: |
         git clone https://github.com/mattpocock/ts-error-translator.git && git clone https://github.com/dmmulroy/better-ts-errors.nvim.git
 
-    - name: ls directories
+    # - name: ls directories
+    #   run: |
+    #     ls 
+    #     pwd
+
+    - name: diff the directories
       run: |
-        ls 
-        pwd
-        #ls https://github.com/mattpocock/ts-error-translator
+        dir1="ts-error-translator/packages/engine/errors/"
+        dir2="better-ts-errors.nvim/error_templates"
+        diff -rq $dir1 $dir2 || true
 
     # - name: Run diff script and create PR
     #   run: |
@@ -46,4 +51,3 @@ jobs:
     #       git commit -m "Auto commit for directory differences"
     #       git push origin "$branch_name"
     #     fi
-    
