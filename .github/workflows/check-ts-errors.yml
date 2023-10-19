@@ -30,16 +30,10 @@ jobs:
       run: |
         dir1="ts-error-translator/packages/engine/errors/"
         dir2="better-ts-errors.nvim/error_templates"
-        diff -rq $dir1 $dir2 || true
 
-    # - name: Run diff script and create PR
-    #   run: |
-    #     # Define your directories and GitHub token here
-    #     dir1="ts-error-translator/packages/engine/errors/"
-    #     dir2="better-ts-errors.nvim/error_templates"
-
-    #     # Use diff to compare the directories and store the differences in a variable
-    #     differences=$(diff -rq $dir1 $dir2 || true)
+        # Use diff to compare the directories and store the differences in a variable
+        differences=$(diff -rq $dir1 $dir2 || true)
+        echo $differences
 
     #     if [ -n "$differences" ]; then
     #       cd better-ts-errors.nvim/
