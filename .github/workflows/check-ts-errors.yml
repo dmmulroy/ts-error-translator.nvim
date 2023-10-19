@@ -45,9 +45,3 @@ jobs:
           git commit -m "Auto commit for directory differences"
           git push origin "$branch_name"
         fi
-
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: ${{ github.ref }}
