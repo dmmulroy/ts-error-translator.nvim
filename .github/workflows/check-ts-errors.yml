@@ -10,14 +10,6 @@ jobs:
    Compare-Directories:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-
-    - name: Checkout ts-error-translator
-      uses: actions/checkout@v4
-      with:
-        repository: mattpocock/ts-error-translator
-        path: ts-error-translator/packages/engine/errors
 
     - name: git config
       run: |
@@ -25,27 +17,33 @@ jobs:
         git config --global user.name "github-actions[bot]"
         git config --global url.https://github.com/.insteadOf git://github.com/
 
+    - name: Clone Repo's
+      run: |
+        git clone https://github.com/mattpocock/ts-error-translator.git && git clone https://github.com/dmmulroy/better-ts-errors.nvim.git
+
     - name: ls directories
       run: |
         ls 
-        ls https://github.com/mattpocock/ts-error-translator
+        pwd
+        #ls https://github.com/mattpocock/ts-error-translator
 
-    - name: Run diff script and create PR
-      run: |
-        # Define your directories and GitHub token here
-        dir1="ts-error-translator/packages/engine/errors/"
-        dir2="better-ts-errors.nvim/error_templates"
+   ` # - name: Run diff script and create PR
+    #   run: |
+    #     # Define your directories and GitHub token here
+    #     dir1="ts-error-translator/packages/engine/errors/"
+    #     dir2="better-ts-errors.nvim/error_templates"
 
-        # Use diff to compare the directories and store the differences in a variable
-        differences=$(diff -rq $dir1 $dir2 || true)
+    #     # Use diff to compare the directories and store the differences in a variable
+    #     differences=$(diff -rq $dir1 $dir2 || true)
 
-        if [ -n "$differences" ]; then
-          cd better-ts-errors.nvim/
-          # Create a new branch and commit the changes
-          branch_name="auto-pr-$(date +”%d-%b-%Y”)"
-          git checkout -b "$branch_name"
-          echo $differences > differences.patch
-          git add differences.patch
-          git commit -m "Auto commit for directory differences"
-          git push origin "$branch_name"
-        fi
+    #     if [ -n "$differences" ]; then
+    #       cd better-ts-errors.nvim/
+    #       # Create a new branch and commit the changes
+    #       branch_name="auto-pr-$(date +”%d-%b-%Y”)"
+    #       git checkout -b "$branch_name"
+    #       echo $differences > differences.patch
+    #       git add differences.patch
+    #       git commit -m "Auto commit for directory differences"
+    #       git push origin "$branch_name"
+    #     fi
+`
