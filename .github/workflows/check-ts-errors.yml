@@ -11,16 +11,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - name: git config
-      run: |
-        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git config --global user.name "github-actions[bot]"
-      env:
-        PAT_TOKEN: ${{ secrets.TOKEN }}
+    # - name: git config
+    #   run: |
+    #     git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+    #     git config --global user.name "github-actions[bot]"
+    #   env:
+    #     PAT_TOKEN: ${{ secrets.TOKEN }}
 
     - name: Clone Repo's
       run: |
         git clone https://github.com/mattpocock/ts-error-translator.git && git clone https://github.com/dmmulroy/better-ts-errors.nvim.git
+      env:
+         PAT_TOKEN: ${{ secrets.TOKEN }}
 
     # - name: ls directories
     #   run: |
