@@ -46,4 +46,4 @@ jobs:
           git push origin "$branch_name"
         fi
       env: 
-        GITHUB_TOKEN: ${{ github.TOKEN }}
+        PAT_TOKEN: ${{ secrets.TOKEN }}
