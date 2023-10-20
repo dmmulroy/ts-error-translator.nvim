@@ -17,6 +17,10 @@ jobs:
       run: |
         git clone https://github.com/mattpocock/ts-error-translator.git && git clone https://github.com/dmmulroy/better-ts-errors.nvim.git
 
+    - name: git config
+      run: |
+        git config --global user.email "kylemelvin95@gmail.com"
+        git config --global user.name "kylemelvin95"
     # - name: ls directories
     #   run: |
     #     ls 
