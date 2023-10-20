@@ -11,13 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    # - name: git config
-    #   run: |
-    #     git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-    #     git config --global user.name "github-actions[bot]"
-    #   env:
-    #     PAT_TOKEN: ${{ secrets.TOKEN }}
-
     - name: Clone Repo's
       run: |
         git clone https://github.com/mattpocock/ts-error-translator.git && git clone https://github.com/dmmulroy/better-ts-errors.nvim.git
@@ -37,7 +30,6 @@ jobs:
         # Use diff to compare the directories and store the differences in a variable
         differences=$(diff -rq $dir1 $dir2 || true)
         echo $differences
-
         if [ -n "$differences" ]; then
           cd better-ts-errors.nvim/
           # Create a new branch and commit the changes
@@ -48,5 +40,10 @@ jobs:
           git commit -m "Auto commit for directory differences"
           git push origin "$branch_name"
         fi
+      env: 
+        PAT_TOKEN: ${{ secrets.TOKEN }}
+
+    - uses: actions/checkout@v2
+    - uses: fregante/setup-git-user@v2
       env: 
         PAT_TOKEN: ${{ secrets.TOKEN }}
