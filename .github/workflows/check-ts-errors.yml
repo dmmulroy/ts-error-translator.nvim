@@ -10,7 +10,9 @@ jobs:
    Compare-Directories:
     runs-on: ubuntu-latest
     steps:
-
+    - uses: actions/checkout@v2
+    - uses: fregante/setup-git-user@v2
+    
     - name: Clone Repo's
       run: |
         git clone https://github.com/mattpocock/ts-error-translator.git && git clone https://github.com/dmmulroy/better-ts-errors.nvim.git
@@ -23,6 +25,7 @@ jobs:
     #     pwd
 
     - name: diff the directories
+
       run: |
         dir1="ts-error-translator/packages/engine/errors/"
         dir2="better-ts-errors.nvim/error_templates"
@@ -40,10 +43,5 @@ jobs:
           git commit -m "Auto commit for directory differences"
           git push origin "$branch_name"
         fi
-      env: 
-        PAT_TOKEN: ${{ secrets.TOKEN }}
-
-    - uses: actions/checkout@v2
-    - uses: fregante/setup-git-user@v2
       env: 
         PAT_TOKEN: ${{ secrets.TOKEN }}
