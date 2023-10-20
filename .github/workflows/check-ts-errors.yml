@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - uses: fregante/setup-git-user@v2.0.1
+    - uses: fregante/setup-git-user@v2
 
     - name: Clone Repo's
       run: |
@@ -21,17 +21,17 @@ jobs:
       env:
         GH_TOKEN: ${{ github.token }}
 
-    - name: git config
-      run: |
-        git config --global user.email "kylemelvin95@gmail.com"
-        git config --global user.name "kylemelvin95"
+    # - name: git config
+    #   run: |
+    #     git config --global user.email "kylemelvin95@gmail.com"
+    #     git config --global user.name "kylemelvin95"
+
     # - name: ls directories
     #   run: |
     #     ls 
     #     pwd
 
     - name: diff the directories
-
       run: |
         dir1="ts-error-translator/packages/engine/errors/"
         dir2="better-ts-errors.nvim/error_templates"
@@ -49,5 +49,7 @@ jobs:
           git commit -m "Auto commit for directory differences"
           git push origin "$branch_name"
         fi
-      env: 
-        PAT_TOKEN: ${{ secrets.TOKEN }}
+      env:
+        GH_TOKEN: ${{ github.token }}
+      # env: 
+      #   PAT_TOKEN: ${{ secrets.TOKEN }}
