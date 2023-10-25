@@ -56,9 +56,12 @@ jobs:
       env: 
         PAT_TOKEN: ${{ secrets.TOKEN }}
 
-    - name: push PR
-      run: |
-        gh_pr_up() { gh pr create $* || gh pr edit $* }
-        gh_pr_up --title "Diffs in error templates" --body "There was differances in the error temlates."
-      env: 
-        PAT_TOKEN: ${{ secrets.TOKEN }}
+
+    - name: Create pull request
+      id: open-pr
+      uses: repo-sync/pull-request@v2
+      with:
+        destination_branch: "main"
+        pr_title: "Sync error templates"
+        pr_reviewer: "dmmulroy"
+        pr_draft: true
