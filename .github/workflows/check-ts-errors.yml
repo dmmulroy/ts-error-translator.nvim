@@ -66,3 +66,5 @@ jobs:
         pr_title: "Sync error templates"
         pr_reviewer: "dmmulroy"
         pr_draft: true
+      env: 
+        PAT_TOKEN: ${{ secrets.TOKEN }}
