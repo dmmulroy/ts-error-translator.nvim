@@ -19,7 +19,7 @@ jobs:
         gh repo clone mattpocock/ts-error-translator
         # git clone https://github.com/mattpocock/ts-error-translator.git && git clone https://github.com/dmmulroy/better-ts-errors.nvim.git
       env:
-        GH_TOKEN: ${{ github.token }}
+        GH_TOKEN: ${{ secrets.TOKEN }}
 
     - name: git config
       run: |
