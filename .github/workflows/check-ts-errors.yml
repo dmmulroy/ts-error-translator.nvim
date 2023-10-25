@@ -51,6 +51,8 @@ jobs:
           git add differences.patch
           git commit -m "Auto commit for directory differences"
           git push origin "$branch_name"
+          gh_pr_up() { gh pr create $* || gh pr edit $* }
+          gh_pr_up --title "Diffs in error templates" --body "There was differances in the error temlates."
         fi
       env: 
         PAT_TOKEN: ${{ secrets.TOKEN }}
