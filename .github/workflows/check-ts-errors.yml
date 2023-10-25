@@ -21,10 +21,10 @@ jobs:
       env:
         GH_TOKEN: ${{ github.token }}
 
-    # - name: git config
-    #   run: |
-    #     git config --global user.email "kylemelvin95@gmail.com"
-    #     git config --global user.name "kylemelvin95"
+    - name: git config
+      run: |
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions"
 
     # - name: ls directories
     #   run: |
