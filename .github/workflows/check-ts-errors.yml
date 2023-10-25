@@ -51,7 +51,7 @@ jobs:
           echo $differences > differences.patch
           git add differences.patch
           git commit -m "Auto commit for directory differences"
-          git push origin "$branch_name"
+          git push -f origin "$branch_name"
         fi
       env: 
         PAT_TOKEN: ${{ secrets.TOKEN }}
