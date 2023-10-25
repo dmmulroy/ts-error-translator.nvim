@@ -46,6 +46,7 @@ jobs:
           cd better-ts-errors.nvim/
           # Create a new branch and commit the changes
           branch_name="auto-pr-$(date +”%d-%b-%Y”)"
+          git pull
           git checkout -b "$branch_name"
           echo $differences > differences.patch
           git add differences.patch
@@ -54,7 +55,7 @@ jobs:
         fi
       env: 
         PAT_TOKEN: ${{ secrets.TOKEN }}
-          
+
     - name: push PR
       run: |
         gh_pr_up() { gh pr create $* || gh pr edit $* }
