@@ -17,14 +17,12 @@ jobs:
       run: |
         gh repo clone dmmulroy/better-ts-errors.nvim
         gh repo clone mattpocock/ts-error-translator
-        #git clone https://github.com/mattpocock/ts-error-translator.git && git clone https://github.com/dmmulroy/better-ts-errors.nvim.git
+        # git clone https://github.com/mattpocock/ts-error-translator.git && git clone https://github.com/dmmulroy/better-ts-errors.nvim.git
       env:
         GH_TOKEN: ${{ github.token }}
 
-    - name: git config
-      run: |
-          git config --global user.name "server"
-          git config --global user.email "server@server.com"
+    # - name: git config
+    #   run: |
     #     git config --global user.email "kylemelvin95@gmail.com"
     #     git config --global user.name "kylemelvin95"
 
@@ -51,7 +49,5 @@ jobs:
           git commit -m "Auto commit for directory differences"
           git push origin "$branch_name"
         fi
-      env:
-        GH_TOKEN: ${{ github.token }}
-      # env: 
-      #   PAT_TOKEN: ${{ secrets.TOKEN }}
+      env: 
+        PAT_TOKEN: ${{ secrets.TOKEN }}
