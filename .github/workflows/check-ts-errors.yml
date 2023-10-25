@@ -15,8 +15,9 @@ jobs:
 
     - name: Clone Repo's
       run: |
-        gh repo clone dmmulroy/better-ts-errors.nvim
-        gh repo clone mattpocock/ts-error-translator
+        #gh repo clone dmmulroy/better-ts-errors.nvim
+        #gh repo clone mattpocock/ts-error-translator
+        git clone git@github.com:mattpocock/ts-error-translator.git && git clone git@github.com:dmmulroy/better-ts-errors.nvim.git
         # git clone https://github.com/mattpocock/ts-error-translator.git && git clone https://github.com/dmmulroy/better-ts-errors.nvim.git
       env:
         GH_TOKEN: ${{ secrets.TOKEN }}
