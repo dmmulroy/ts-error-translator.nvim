@@ -3,8 +3,7 @@ name: Compare Directories
 on:
   push:
     branches:
-      - km-main-change
-      #- main
+      - main
 
 jobs:
    Diff-Directories:
@@ -25,11 +24,6 @@ jobs:
         git clone https://github.com/mattpocock/ts-error-translator.git && git clone https://github.com/dmmulroy/better-ts-errors.nvim.git
       env:
         GH_TOKEN: ${{ secrets.TOKEN }}
-
-    # - name: ls directories
-    #   run: |
-    #     ls 
-    #     pwd
 
     - name: Check for directory differences
       run: |
