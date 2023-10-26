@@ -29,13 +29,14 @@ jobs:
     #     GH_TOKEN: ${{ secrets.TOKEN }}
 
     - name: Checkout source repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         repository: mattpocock/ts-error-translator
         ref: main
+        token: ${{ secrets.TOKEN }}
 
     - name: Checkout target repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         repository: dmmulroy/better-ts-errors.nvim
         ref: main
