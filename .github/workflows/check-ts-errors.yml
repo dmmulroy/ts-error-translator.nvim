@@ -11,67 +11,58 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    #- uses: fregante/setup-git-user@v2
     - name: git config
       run: |
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions"
         git config --global url.https://${{ secrets.TOKEN }}@github.com/.insteadOf https://github.com/
 
-    # - name: Clone Repo's
-    #   run: |
-    #     #gh repo clone dmmulroy/better-ts-errors.nvim
-    #     #gh repo clone mattpocock/ts-error-translator
-    #     #git clone git@github.com:mattpocock/ts-error-translator.git && git clone git@github.com:dmmulroy/better-ts-errors.nvim.git
-    #     git clone https://github.com/mattpocock/ts-error-translator.git && git clone https://github.com/dmmulroy/better-ts-errors.nvim.git
-    #   env:
-    #     GH_TOKEN: ${{ secrets.TOKEN }}
+    - name: Clone Repo's
+      run: |
+        #gh repo clone dmmulroy/better-ts-errors.nvim
+        #gh repo clone mattpocock/ts-error-translator
+        #git clone git@github.com:mattpocock/ts-error-translator.git && git clone git@github.com:dmmulroy/better-ts-errors.nvim.git
+        git clone https://github.com/mattpocock/ts-error-translator.git && git clone https://github.com/dmmulroy/better-ts-errors.nvim.git
+      env:
+        GH_TOKEN: ${{ secrets.TOKEN }}
 
-    - name: Checkout source repository
-      uses: actions/checkout@v3
-      with:
-        repository: mattpocock/ts-error-translator
-        ref: main
-        token: ${{ secrets.TOKEN }}
+    # - name: Checkout source repository
+    #   uses: actions/checkout@v3
+    #   with:
+    #     repository: mattpocock/ts-error-translator
+    #     ref: main
+    #     token: ${{ secrets.TOKEN }}
 
-    - name: Checkout target repository
-      uses: actions/checkout@v3
-      with:
-        repository: dmmulroy/better-ts-errors.nvim
-        ref: main
+    # - name: Checkout target repository
+    #   uses: actions/checkout@v3
+    #   with:
+    #     repository: dmmulroy/better-ts-errors.nvim
+    #     ref: main
 
     # - name: ls directories
     #   run: |
     #     ls 
     #     pwd
 
-    - name: Sync Repositories
+    - name: Check for directory differences
       run: |
-        mkdir -p dmmulroy/better-ts-errors.nvim/error_templates/
-        cp -r mattpocock/ts-error-translator/packages/engine/errors/. dmmulroy/better-ts-errors.nvim/error_templates/
-      working-directory: ${{ github.workspace }}
+        dir1="ts-error-translator/packages/engine/errors/"
+        dir2="better-ts-errors.nvim/error_templates"
 
-    # - name: diff the directories
-    #   run: |
-    #     dir1="ts-error-translator/packages/engine/errors/"
-    #     dir2="better-ts-errors.nvim/error_templates"
+        # Use diff to compare the directories and store the differences in a variable
+        differences=$(diff -rq $dir1 $dir2 || true)
+        echo $differences
 
-    #     # Use diff to compare the directories and store the differences in a variable
-    #     differences=$(diff -rq $dir1 $dir2 || true)
-    #     echo $differences
-    #     git branch --v
+        if [ -n "$differences" ]; then
+          cd better-ts-errors.nvim/
 
-    #     if [ -n "$differences" ]; then
-    #       cd better-ts-errors.nvim/
-
-    #       # Create a new branch and commit the changes
-    #       branch_name="auto-pr-$(date +%d-%b-%Y)"
-    #       git checkout -b "$branch_name"
-    #       git add -u
-    #       git commit -m "Auto commit for directory differences"
-    #       git push -f origin "$branch_name"
-    #     fi
+          # Create a new branch and commit the changes
+          branch_name="auto-pr-$(date +%d-%b-%Y)"
+          git checkout -b "$branch_name"
+          git add -u
+          git commit -m "Auto commit for directory differences"
+          git push -f origin "$branch_name"
+        fi
       
     - name: Submit PR
       run: |    
