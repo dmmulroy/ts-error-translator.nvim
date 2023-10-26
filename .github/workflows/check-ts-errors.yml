@@ -60,6 +60,7 @@ jobs:
           branch_name="auto-pr-$(date +%d-%b-%Y)"
           git pull origin
           git checkout -b "$branch_name"
+          echo $differences > differences.patch
 
           if [ -f "differences.patch" ]; then
             # Apply the changes from differences.patch to dir2
