@@ -34,27 +34,46 @@ jobs:
     #     ls 
     #     pwd
 
-    - name: diff the directories
+    - name: Checkout source repository
+      uses: actions/checkout@v2
+      with:
+        repository: mattpocock/ts-error-translator
+
+    - name: Checkout target repository
+      uses: actions/checkout@v2
+      with:
+        repository: dmmulroy/better-ts-errors.nvim
+
+    - name: Sync Repositories
       run: |
-        dir1="ts-error-translator/packages/engine/errors/"
-        dir2="better-ts-errors.nvim/error_templates"
+        mkdir -p dmmulroy/better-ts-errors.nvim/error_templates/
+        cp -r mattpocock/ts-error-translator/packages/engine/errors/* dmmulroy/better-ts-errors.nvim/error_templates/
+      working-directory: ${{ github.workspace }}
+      
+    # - name: diff the directories
+    #   run: |
+    #     dir1="ts-error-translator/packages/engine/errors/"
+    #     dir2="better-ts-errors.nvim/error_templates"
 
-        # Use diff to compare the directories and store the differences in a variable
-        differences=$(diff -rq $dir1 $dir2 || true)
-        echo $differences
-        git branch --v
+    #     # Use diff to compare the directories and store the differences in a variable
+    #     differences=$(diff -rq $dir1 $dir2 || true)
+    #     echo $differences
+    #     git branch --v
 
-        if [ -n "$differences" ]; then
-          cd better-ts-errors.nvim/
+    #     if [ -n "$differences" ]; then
+    #       cd better-ts-errors.nvim/
 
-          # Create a new branch and commit the changes
-          branch_name="auto-pr-$(date +%d-%b-%Y)"
-          git checkout -b "$branch_name"
-          git add -u
-          git commit -m "Auto commit for directory differences"
-          git push -f origin "$branch_name"
-          gh pr create --fill -B "main" -H $branch_name --title "Sync_error_templates" --body "Syncing error_templates from ts-error-translator" -r dmmulroy
-        fi
+    #       # Create a new branch and commit the changes
+    #       branch_name="auto-pr-$(date +%d-%b-%Y)"
+    #       git checkout -b "$branch_name"
+    #       git add -u
+    #       git commit -m "Auto commit for directory differences"
+    #       git push -f origin "$branch_name"
+    #     fi
+      
+    - name: Submit PR
+      run: |    
+        gh pr create --fill -B "main" -H $branch_name --title "Sync_error_templates" --body "Syncing error_templates from ts-error-translator" -r dmmulroy
       env:
         GH_TOKEN: ${{ github.token }} 
 permissions:

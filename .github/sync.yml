@@ -1,7 +1,5 @@
-group:
-  files:
-    - source: packages/engine/errors/
-      dest: error_templates/
-  repos: |
-    mattpocock/ts-error-translator
-    dmmulroy/better-ts-errors.nvim
+dmmulroy/better-ts-errors.nvim@main:
+  - source: error_templates/
+
+mattpocock/ts-error-translator:
+  - ts-error-translator/packages/engine/errors/
