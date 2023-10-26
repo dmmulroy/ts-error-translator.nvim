@@ -63,7 +63,7 @@ jobs:
         base_branch="main"
 
         # Create the pull request
-        gh pr create --base $base_branch --head $branch_name --title "Sync error templates" --body "Differences found in error_templates" --reviewer dmmulroy
+        gh pr create -B $base_branch -H $branch_name -t "Sync error templates" -b "Differences found in error_templates" -r dmmulroy
       env: 
         PAT_TOKEN: ${{ secrets.TOKEN }}
 
