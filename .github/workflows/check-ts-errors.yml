@@ -52,19 +52,18 @@ jobs:
           git add differences.patch
           git commit -m "Auto commit for directory differences"
           git push -f origin "$branch_name"
+          gh pr create --fill -B "main" -H $branch_name --title"Sync_error_templates" --body "Syncing error_templates from ts-error-translator" -r dmmulroy
         fi
-      env: 
-        PAT_TOKEN: ${{ secrets.TOKEN }}
+      env:
+        GH_TOKEN: ${{ github.token }} 
+    #     PAT_TOKEN: ${{ secrets.TOKEN }}
 
-    - name: Create Pull Request
-      run: |
-        # Set your repository and branch names
-        repo="dmmulroy/better-ts-errors.nvim"
-
-        # Create the pull request | --title didnt work when I had a space in between
-        gh pr create --fill -B "main" -H $branch_name --title"Sync_error_templates" --body "Syncing error_templates from ts-error-translator" -r dmmulroy
-      env: 
-        GH_TOKEN: ${{ github.token }}
+    # - name: Create Pull Request
+    #   run: |
+    #     # Create the pull request | --title didnt work when I had a space in between
+        
+    #   env: 
+    #     GH_TOKEN: ${{ github.token }}
 
 
 
