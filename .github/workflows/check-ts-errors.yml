@@ -64,7 +64,7 @@ jobs:
         # Create the pull request
         gh pr create -B "main" -H $branch_name -t"Sync_error_templates" -r dmmulroy
       env: 
-        PAT_TOKEN: ${{ secrets.TOKEN }}
+        GH_TOKEN: ${{ github.token }}
 
 
 
