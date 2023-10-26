@@ -52,7 +52,7 @@ jobs:
           git add differences.patch
           git commit -m "Auto commit for directory differences"
           git push -f origin "$branch_name"
-          gh pr create --fill -B "main" -H $branch_name --title"Sync_error_templates" --body "Syncing error_templates from ts-error-translator" -r dmmulroy
+          gh pr create --fill -B "main" -H $branch_name --title "Sync_error_templates" --body "Syncing error_templates from ts-error-translator" -r dmmulroy
         fi
       env:
         GH_TOKEN: ${{ github.token }} 
