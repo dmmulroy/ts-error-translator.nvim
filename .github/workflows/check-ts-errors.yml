@@ -9,9 +9,15 @@ on:
 jobs:
    Diff-Directories:
     runs-on: ubuntu-latest
+
     steps:
     - uses: actions/checkout@v3
-    - uses: fregante/setup-git-user@v2
+    #- uses: fregante/setup-git-user@v2
+    - name: git config
+      run: |
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions"
+        git config --global url.https://${{ secrets.TOKEN }}@github.com/.insteadOf https://github.com/
 
     # - name: Clone Repo's
     #   run: |
@@ -22,34 +28,27 @@ jobs:
     #   env:
     #     GH_TOKEN: ${{ secrets.TOKEN }}
 
-    - name: git config
-      run: |
-        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git config --global user.name "github-actions"
-        git config --global url.https://${{ secrets.TOKEN }}@github.com/.insteadOf https://github.com/
-
     - name: Checkout source repository
       uses: actions/checkout@v2
       with:
         repository: mattpocock/ts-error-translator
+        ref: main
 
     - name: Checkout target repository
       uses: actions/checkout@v2
       with:
         repository: dmmulroy/better-ts-errors.nvim
+        ref: main
 
-    - name: ls directories
-      run: |
-        ls 
-        pwd
-        cd ../
-        ls
-        pwd
+    # - name: ls directories
+    #   run: |
+    #     ls 
+    #     pwd
 
     - name: Sync Repositories
       run: |
         mkdir -p dmmulroy/better-ts-errors.nvim/error_templates/
-        cp -r mattpocock/ts-error-translator/packages/engine/errors/* dmmulroy/better-ts-errors.nvim/error_templates/
+        cp -r mattpocock/ts-error-translator/packages/engine/errors/. dmmulroy/better-ts-errors.nvim/error_templates/
       working-directory: ${{ github.workspace }}
 
     # - name: diff the directories
