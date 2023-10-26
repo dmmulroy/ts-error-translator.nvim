@@ -45,11 +45,10 @@ jobs:
         if [ -n "$differences" ]; then
           cd better-ts-errors.nvim/
           # Create a new branch and commit the changes
-          branch_name="auto-pr-$(date +”%d-%b-%Y”)"
+          branch_name="auto-pr-$(date +%d-%b-%Y)"
           git pull origin
           git checkout -b "$branch_name"
-          echo $differences > differences.patch
-          git add differences.patch
+          git add -u
           git commit -m "Auto commit for directory differences"
           git push -f origin "$branch_name"
           gh pr create --fill -B "main" -H $branch_name --title "Sync_error_templates" --body "Syncing error_templates from ts-error-translator" -r dmmulroy
@@ -58,28 +57,3 @@ jobs:
         GH_TOKEN: ${{ github.token }} 
 permissions:
   pull-requests: write
-
-    #     PAT_TOKEN: ${{ secrets.TOKEN }}
-
-    # - name: Create Pull Request
-    #   run: |
-    #     # Create the pull request | --title didnt work when I had a space in between
-        
-    #   env: 
-    #     GH_TOKEN: ${{ github.token }}
-
-
-
-#     - name: Create pull request
-#       id: open-pr
-#       uses: repo-sync/pull-request@v2
-#       with:
-#         destination_branch: "main"
-#         pr_title: "Sync error templates"
-#         pr_reviewer: "dmmulroy"
-#         pr_draft: true
-#       env: 
-#         PAT_TOKEN: ${{ secrets.TOKEN }}
-
-# permissions:
-#   pull-requests: write
