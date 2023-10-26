@@ -66,11 +66,7 @@ jobs:
         gh auth login --with-token $PAT_TOKEN
 
         # Create the pull request
-        gh pr create --base $base_branch --head $branch_name --title "Sync error templates" --body "Differences found in error_templates"
-
-        # Add the user as a reviewer
-        gh pr review $branch_name --reviewer dmmulroy
-
+        gh pr create --base $base_branch --head $branch_name --title "Sync error templates" --body "Differences found in error_templates" --reviewer dmmulroy
       env: 
         PAT_TOKEN: ${{ secrets.TOKEN }}
 
