@@ -61,9 +61,6 @@ jobs:
         # Set your repository and branch names
         repo="dmmulroy/better-ts-errors.nvim"
         base_branch="main"
-        
-        # Authenticate using your PAT (Personal Access Token)
-        gh auth login --with-token $PAT_TOKEN
 
         # Create the pull request
         gh pr create --base $base_branch --head $branch_name --title "Sync error templates" --body "Differences found in error_templates" --reviewer dmmulroy
