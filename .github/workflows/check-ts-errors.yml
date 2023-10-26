@@ -42,11 +42,14 @@ jobs:
         # Use diff to compare the directories and store the differences in a variable
         differences=$(diff -rq $dir1 $dir2 || true)
         echo $differences
+        git branch --v
+
         if [ -n "$differences" ]; then
           cd better-ts-errors.nvim/
+          git pull origin
+          
           # Create a new branch and commit the changes
           branch_name="auto-pr-$(date +%d-%b-%Y)"
-          git pull origin
           git checkout -b "$branch_name"
           git add -u
           git commit -m "Auto commit for directory differences"
