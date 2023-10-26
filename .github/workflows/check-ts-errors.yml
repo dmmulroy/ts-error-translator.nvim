@@ -56,6 +56,9 @@ jobs:
         fi
       env:
         GH_TOKEN: ${{ github.token }} 
+permissions:
+  pull-requests: write
+
     #     PAT_TOKEN: ${{ secrets.TOKEN }}
 
     # - name: Create Pull Request
