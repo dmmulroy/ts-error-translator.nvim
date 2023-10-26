@@ -6,7 +6,7 @@ on:
   workflow_dispatch: #Manual trigger 
 
 jobs:
-   check-ts-errors:
+  check-ts-errors:
     runs-on: ubuntu-latest
 
     steps:
