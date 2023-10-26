@@ -1,4 +1,4 @@
-name: Compare Directories
+name: Check TS Errors and Open PR
 
 on:
   schedule:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch: #Manual trigger 
 
 jobs:
-   Diff-Directories:
+   check-ts-errors:
     runs-on: ubuntu-latest
 
     steps:
