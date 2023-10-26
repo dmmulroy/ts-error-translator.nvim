@@ -67,3 +67,6 @@ jobs:
         pr_draft: true
       env: 
         PAT_TOKEN: ${{ secrets.TOKEN }}
+
+permissions:
+  pull-requests: write
