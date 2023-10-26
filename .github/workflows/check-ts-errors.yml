@@ -46,8 +46,7 @@ jobs:
 
         if [ -n "$differences" ]; then
           cd better-ts-errors.nvim/
-          git pull origin
-          
+
           # Create a new branch and commit the changes
           branch_name="auto-pr-$(date +%d-%b-%Y)"
           git checkout -b "$branch_name"
