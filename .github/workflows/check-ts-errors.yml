@@ -58,8 +58,18 @@ jobs:
 
           # Create a new branch and commit the changes
           branch_name="auto-pr-$(date +%d-%b-%Y)"
+          git pull origin
           git checkout -b "$branch_name"
-          git add -u
+
+          if [ -f "differences.patch" ]; then
+            # Apply the changes from differences.patch to dir2
+            patch -p0 < differences.patch
+          else
+            # If no patch file is found, copy everything from dir1 to dir2
+            cp -r "$dir1"* "$dir2"
+          fi
+
+          git add .
           git commit -m "Auto commit for directory differences"
           git push -f origin "$branch_name"
         fi
