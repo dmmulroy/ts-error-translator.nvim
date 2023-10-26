@@ -52,9 +52,27 @@ jobs:
           git add differences.patch
           git commit -m "Auto commit for directory differences"
           git push -f origin "$branch_name"
-        fi
       env: 
         PAT_TOKEN: ${{ secrets.TOKEN }}
+
+    - name: Create Pull Request
+      run: |
+        # Set your repository and branch names
+        repo="dmmulroy/better-ts-errors.nvim"
+        base_branch="main"
+        
+        # Authenticate using your PAT (Personal Access Token)
+        gh auth login --with-token $PAT_TOKEN
+
+        # Create the pull request
+        gh pr create --base $base_branch --head $branch_name --title "Sync error templates" --body "Differences found in error_templates"
+
+        # Add the user as a reviewer
+        gh pr review $branch_name --reviewer dmmulroy
+
+      env: 
+        PAT_TOKEN: ${{ secrets.TOKEN }}
+
 
 
 #     - name: Create pull request
