@@ -62,7 +62,7 @@ jobs:
         repo="dmmulroy/better-ts-errors.nvim"
 
         # Create the pull request
-        gh pr create -B "main" -H $branch_name -t"Sync_error_templates" -b"Syncing error_templates from ts-error-translator" -r dmmulroy
+        gh pr create -B "main" -H $branch_name --title"Sync_error_templates" --body"Syncing error_templates from ts-error-translator" -r dmmulroy
       env: 
         GH_TOKEN: ${{ github.token }}
 
