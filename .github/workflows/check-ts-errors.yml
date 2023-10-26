@@ -60,10 +60,9 @@ jobs:
       run: |
         # Set your repository and branch names
         repo="dmmulroy/better-ts-errors.nvim"
-        base_branch="main"
 
         # Create the pull request
-        gh pr create -B $base_branch -H $branch_name -t "Sync_error_templates" -r dmmulroy
+        gh pr create -B "main" -H $branch_name -t "Sync_error_templates" -r dmmulroy
       env: 
         PAT_TOKEN: ${{ secrets.TOKEN }}
 
