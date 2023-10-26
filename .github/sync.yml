@@ -1,5 +1,0 @@
-dmmulroy/better-ts-errors.nvim@main:
-  - source: error_templates/
-
-mattpocock/ts-error-translator:
-  - ts-error-translator/packages/engine/errors/
