@@ -8,35 +8,50 @@ on:
 jobs:
   check-ts-errors:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: git config
+      run: |
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions"
+        git config --global url.https://${{ secrets.TOKEN }}@github.com/.insteadOf https://github.com/
 
-      - name: Check for Changes in ts-error-translator
-        run: |
-          REPO_OWNER="mattpocock"
-          REPO_NAME="ts-error-translator"
-          FOLDER_PATH="packages/engine/errors"
+    - name: Clone Repo's
+      run: |
+        git clone https://github.com/mattpocock/ts-error-translator.git && git clone https://github.com/dmmulroy/better-ts-errors.nvim.git
+      env:
+        GH_TOKEN: ${{ secrets.TOKEN }}
 
-          CHANGES=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
-            "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/compare/master...$REPO_OWNER:master?path=$FOLDER_PATH")
+    - name: Check for directory differences
+      run: |
+        dir1="ts-error-translator/packages/engine/errors/"
+        dir2="better-ts-errors.nvim/error_templates"
 
-          if [ "$CHANGES" != "{\"status\":\"identical\"}" ]; then
-            echo "Changes detected. Creating a PR..."
-            # Create a PR using the GitHub API
-            PR_TITLE="Update $FOLDER_PATH from $REPO_OWNER/$REPO_NAME"
-            PR_BODY="This PR updates $FOLDER_PATH from $REPO_OWNER/$REPO_NAME."
-            PR_HEAD="$REPO_OWNER:master"
-            PR_BASE="master"
-            PR_JSON="{\"title\":\"$PR_TITLE\",\"body\":\"$PR_BODY\",\"head\":\"$PR_HEAD\",\"base\":\"$PR_BASE\"}"
+        # Use diff to compare the directories and store the differences in a variable
+        differences=$(diff -rq $dir1 $dir2 || true)
+        echo $differences
 
-            PR_URL=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
-              -d "$PR_JSON" \
-              "https://api.github.com/repos/$GITHUB_REPOSITORY/pulls" | jq -r .html_url)
-            echo "PR created: $PR_URL"
-          else
-            echo "No changes detected."
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        differences=$(diff -rq "$dir1" "$dir2" || true)
+        echo "$differences"
 
+        if [ -n "$differences" ]; then
+          # Delete everything in dir2
+          rm -rf "$dir2"
+
+          # Copy everything from dir1 to dir2
+          cp -r "$dir1" "$dir2"
+
+          # Commit the changes and push to a new branch
+          cd better-ts-errors.nvim/
+          branch_name="auto-pr-$(date +%d-%b-%Y)"
+          git pull origin
+          git checkout -b "$branch_name"
+          git add .
+          git commit -m "Auto commit for directory differences"
+          git push -f origin "$branch_name"
+          gh pr create --fill -B "main" -H $branch_name --title "Sync_error_templates" --body "Syncing error_templates from ts-error-translator" -r dmmulroy
+        fi      
+      env:
+        GH_TOKEN: ${{ github.token }} 
+permissions:
+  pull-requests: write
