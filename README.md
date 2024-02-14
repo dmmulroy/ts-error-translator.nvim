@@ -18,7 +18,7 @@ Our project handles a variety of TypeScript errors as defined by the `ts-error-t
 
 ## Contributing
 
-We welcome contributions! If you're interested in improving TypeScript error handling in Neovim or want to suggest new features, please see our contribution guidelines.
+We welcome contributions! If you're interested in improving TypeScript error handling in Neovim or want to suggest new features, please feel free to create a Pull Request and we will take a look at it.
 
 ## Error Templates Destination
 
