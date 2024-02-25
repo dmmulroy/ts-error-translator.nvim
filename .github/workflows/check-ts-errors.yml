@@ -18,14 +18,14 @@ jobs:
 
     - name: Clone Repo's
       run: |
-        git clone https://github.com/mattpocock/ts-error-translator.git && git clone https://github.com/dmmulroy/better-ts-errors.nvim.git
+        git clone https://github.com/mattpocock/ts-error-translator.git && git clone https://github.com/dmmulroy/ts-error-translator.nvim.git
       env:
         GH_TOKEN: ${{ secrets.TOKEN }}
 
     - name: Check for directory differences
       run: |
         dir1="ts-error-translator/packages/engine/errors/"
-        dir2="better-ts-errors.nvim/error_templates"
+        dir2="ts-error-translator.nvim/error_templates"
 
         # Use diff to compare the directories and store the differences in a variable
         differences=$(diff -rq $dir1 $dir2 || true)
@@ -42,14 +42,14 @@ jobs:
           cp -r "$dir1" "$dir2"
 
           # Commit the changes and push to a new branch
-          cd better-ts-errors.nvim/
+          cd ts-error-translator.nvim/
           branch_name="auto-pr-$(date +%d-%b-%Y)"
           git pull origin
           git checkout -b "$branch_name"
           git add .
           git commit -m "Auto commit for directory differences"
           git push -f origin "$branch_name"
-          gh pr create --fill -B "main" -H $branch_name --title "Sync_error_templates" --body "Syncing error_templates from ts-error-translator" -r dmmulroy
+          gh pr create --fill -B "main" -H $branch_name --title "Sync_error_templates" --body "Syncing error_templates from upstream ts-error-translator" -r dmmulroy
         fi      
       env:
         GH_TOKEN: ${{ github.token }} 
