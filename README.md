@@ -2,6 +2,9 @@
 
 Neovim plugin to turn TypeScript errors into plain English.
 
+![image](https://github.com/dmmulroy/ts-error-translator.nvim/assets/2755722/5fcd1f42-d941-491b-a89b-33ab3c2ed29b)
+
+
 This is a port of [Matt Pocock's ts-error-translator for VSCode](https://github.com/mattpocock/ts-error-translator)
 
 ## Installation
