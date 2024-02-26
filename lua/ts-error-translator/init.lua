@@ -124,9 +124,7 @@ M.translate = function(diagnostic)
     local parsed = parse_markdown(improved_text_file)
     local params = get_params(parsed["original"])
 
-    if #params > 0 then
-      diagnostic.message = translate_error_message(diagnostic.message, parsed["translated"], params)
-    end
+    diagnostic.message = translate_error_message(diagnostic.message, parsed["translated"], params)
   end
 
   return diagnostic
