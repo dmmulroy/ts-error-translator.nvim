@@ -1,6 +1,9 @@
 -- Module M is the public API available for ts-error-translator.nvim
 local M = {}
 
+-- All language servers that are supported
+local supported_servers = { "tsserver", "vtsls" }
+
 -- Regex pattern for capturing numbered parameters like {0}, {1}, etc.
 local parameter_regex = "({%d})"
 
@@ -147,7 +150,7 @@ end
 M.translate_diagnostics = function(_, result, ctx, _)
   local client_name = get_lsp_client_name_by_id(ctx.client_id)
 
-  if client_name == "tsserver" then
+  if vim.tbl_contains(supported_servers, client_name) then
     vim.tbl_map(M.translate, result.diagnostics)
   end
 end
