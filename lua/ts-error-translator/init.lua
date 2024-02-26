@@ -8,10 +8,8 @@ local parameter_regex = "({%d})"
 -- @param error_template string: The template string containing parameter placeholders.
 -- @return table: A list of all parameter placeholders found in the template.
 local function get_params(error_template)
-  print("get_params - error_template: " .. error_template)
   local params = {}
   for param in error_template:gmatch(parameter_regex) do
-    print("get_params - param: " .. param)
     table.insert(params, param)
   end
   return params
@@ -21,11 +19,9 @@ end
 -- @param message string: The message string containing quoted parts.
 -- @return table: A list of all quoted strings found in the message.
 local function get_matches(message)
-  print("get_matches - message: " .. message)
   local matches = {}
 
   for match in string.gmatch(message, "'(.-)'") do
-    print("get_matches - match: " .. match)
     table.insert(matches, match)
   end
 
@@ -71,7 +67,6 @@ end
 -- @param error_num string: The error number identifier.
 -- @return file* | nil: The file pointer to the markdown file, if exists.
 local function get_error_markdown_file(error_num)
-  print("get_error_markdown_file - error_num: " .. error_num)
   if error_num == nil then
     return nil
   end
@@ -79,7 +74,6 @@ local function get_error_markdown_file(error_num)
   local filename = error_num .. ".md"
   local plugin_path = vim.fn.fnamemodify(debug.getinfo(1).source:sub(2), ":p:h")
   local filepath = plugin_path .. "/error_templates/" .. filename
-  print("get_error_markdown_file - filepath: " .. filepath)
 
   local markdown_file = io.open(filepath, "r")
   return markdown_file
@@ -92,8 +86,6 @@ local function parse_markdown(markdown)
   local contents = markdown:read("*all")
   markdown:close()
 
-  print("parse_markdown - contents: " .. contents)
-
   -- First, remove the leading and trailing '---'
   local trimmed_markdown = contents:gsub("^%-%-%-%s*", ""):gsub("%s*%-%-%-$", "")
 
@@ -103,9 +95,6 @@ local function parse_markdown(markdown)
   -- Trim whitespace from both contents
   original_content = original_content:gsub('^original:%s*"(.-)"%s*$', "%1")
   translated_content = translated_content:gsub("^%s*(.-)%s*$", "%1")
-
-  print("parse_markdown - original_content: " .. original_content)
-  print("parse_markdown - translated_content: " .. translated_content)
 
   -- Return the table with the extracted contents
   return {
@@ -158,8 +147,7 @@ M.lsp_publish_diagnostics_override = function(_, result, ctx, config)
   if client_name == "tsserver" then
     local updated_diagnostics = {}
 
-    for idx, diagnostic in ipairs(result.diagnostics) do
-      print("lsp_publish_diagnostics_override diagnostic " .. idx .. ": " .. vim.inspect(diagnostic))
+    for _, diagnostic in ipairs(result.diagnostics) do
       diagnostic.message = M.translate(diagnostic.code, diagnostic.message)
 
       table.insert(updated_diagnostics, diagnostic)
