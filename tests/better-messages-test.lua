@@ -1,4 +1,4 @@
-local translator = require("ts-error-translator")
+local translator = require("tsc.better-messages")
 
 describe("Does the basics", function()
   it("Replaces the original text with the correct md file text", function()
