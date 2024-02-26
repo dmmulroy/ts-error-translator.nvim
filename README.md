@@ -59,6 +59,9 @@ If you want to override `tsserver`'s `textDocument/publishDiagnostics` handler
 `require('ts-error-translator').lsp_publish_diagnostics_override`, that you can
 then use to override your lsp handlers.
 
+## Related
+If you like this plugin and find it useful, you might also like my plugin, [tsc.nvim](https://github.com/dmmulroy/tsc.nvim), a Neovim plugin for seamless, asynchronous project-wide TypeScript type-checking using the TypeScript compiler (tsc)
+
 ## Contributing
 
 Feel free to open issues or submit pull requests if you encounter any bugs or have suggestions for improvements. Your contributions are welcome!
@@ -69,4 +72,4 @@ This plugin is released under the MIT License. See the [LICENSE](LICENSE) file f
 
 ## Acknowledgements
 
-- A special thanks to [Matt Pocock](https://github.com/mattpocock) for creating the `ts-error-translator`, providing the foundation for this project.
+A special thanks to [Matt Pocock](https://github.com/mattpocock) for creating the `ts-error-translator`, providing the foundation for this project.
