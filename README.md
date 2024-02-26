@@ -39,7 +39,7 @@ Then run `:PlugInstall` to install the plugin.
 To set up the plugin, add the following line to where you manage your plugins:
 
 ```lua
-require('ts-error-translator').setup()
+require("ts-error-translator").setup()
 ```
 
 ## Configuration
@@ -56,10 +56,18 @@ default configuration for the plugin:
 
 If you want to override `tsserver`'s `textDocument/publishDiagnostics` handler
 `manually, ts-error-translator.nvim` exports a function,
-`require('ts-error-translator').lsp_publish_diagnostics_override`, that you can
-then use to override your lsp handlers.
+`require('ts-error-translator').translate_diagnostics`, that you can
+then use to override your lsp handlers. Here is example usage:
+
+```lua
+vim.lsp.handlers["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
+  require("ts-error-translator").translate_diagnostics(err, result, ctx, config)
+  vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx, config)
+end
+```
 
 ## Related
+
 If you like this plugin and find it useful, you might also like my plugin, [tsc.nvim](https://github.com/dmmulroy/tsc.nvim), a Neovim plugin for seamless, asynchronous project-wide TypeScript type-checking using the TypeScript compiler (tsc)
 
 ## Contributing
