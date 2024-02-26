@@ -32,7 +32,7 @@ use('dmmulroy/ts-error-translator.nvim',)
 To install the plugin using vim-plug, add the following to your plugin configuration:
 
 ```vim
-Plug 'dmmulroy/tsc.nvim'
+Plug 'dmmulroy/ts-error-translator.nvim'
 ```
 
 Then run `:PlugInstall` to install the plugin.
