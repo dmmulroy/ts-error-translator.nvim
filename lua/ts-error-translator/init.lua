@@ -44,13 +44,23 @@ end
 -- @param translated_error_template string: The translated error message template.
 -- @param params table: The list of parameters to replace in the translated error message.
 -- @return string: The translated error message, or original if replacement isn't possible.
-local function translate_error_message(error_msg, translated_error_template, params)
-  local final_error = error_msg .. "\n\n" .. "TypeScript Error Translation(s):\n"
+local function translate_error_message(error_message, translated_error_template, params)
+  local final_error = error_message .. "\n\n" .. "TypeScript Error Translation(s):\n"
 
-  local error_messages = split_on_new_line(error_msg)
+  local error_messages = split_on_new_line(error_message)
 
   for _, msg in ipairs(error_messages) do
     local matches = get_matches(msg)
+
+    -- If there is an error parsing the matches just return the initial error
+    -- a message to create an issue
+    if #params ~= #matches then
+      return error_message
+        .. "\n\n"
+        .. "TypeScript Error Translation(s):\n"
+        .. "  • Something went wrong while translating your error. Please file an issue at https://github.com/dmmulroy/ts-error-translator.nvim and an example of the code that caused this error.\n"
+    end
+
     local translated_error = translated_error_template
 
     for i = 1, #params do
