@@ -32,30 +32,10 @@ local function get_matches(message)
   return matches
 end
 
---[[
-translate_error_message - error_msg: Type 'string | undefined' is not assignable to type 'boolean'.
-  Type 'undefined' is not assignable to type 'boolean'.
-translate_error_message - error_template: Type '{0}' is not assignable to type '{1}'.
-translate_error_message - translated_error_template: I was expecting a type matching '{1}', but instead you passed '{0}'.
-
-  get_matches - message: Type 'string | undefined' is not assignable to type 'boolean'.
-    Type 'undefined' is not assignable to type 'boolean'.
-  get_matches - match: string | undefined
-  get_matches - match: boolean
-  get_matches - match: undefined
-  get_matches - match: boolean
-
-translate_error_message - matches: { "string | undefined", "boolean", "undefined", "boolean" }
-  get_params - error_template: Type '{0}' is not assignable to type '{1}'.
-  get_params - param: {0}
-  get_params - param: {1}
-
-translate_error_message - params: { "{0}", "{1}" }
-translate_error_message - (pre)translated_error: I was expecting a type matching '{1}', but instead you passed '{0}'.
-translate_error_message - (post)translated_error: I was expecting a type matching 'boolean', but instead you passed 'string | undefined'.
-]]
-
-function split_on_new_line(s)
+-- Splits a string into a list of lines.
+-- @param s string: The string to be split.
+-- @return table: A list of lines extracted from the input string.
+local function split_on_new_line(s)
   local lines = {}
   for line in s:gmatch("[^\r\n]+") do
     table.insert(lines, line:match("^%s*(.-)%s*$"))
@@ -65,28 +45,26 @@ end
 
 -- Constructs a translated error message by replacing placeholders in the template with actual values.
 -- @param error_msg string: The original error message.
--- @param error_template string: The error template with placeholders.
 -- @param translated_error_template string: The translated error message template.
+-- @param params table: The list of parameters to replace in the translated error message.
 -- @return string: The translated error message, or original if replacement isn't possible.
-local function translate_error_message(error_msg, error_template, translated_error_template)
-  print("translate_error_message - split_string: " .. vim.inspect(split_on_new_line(error_msg)))
-  print("translate_error_message - error_msg: " .. error_msg)
-  print("translate_error_message - error_template: " .. error_template)
-  print("translate_error_message - translated_error_template: " .. translated_error_template)
-  local matches = get_matches(error_msg)
-  print("translate_error_message - matches: " .. vim.inspect(matches))
-  local params = get_params(error_template)
-  print("translate_error_message - params: " .. vim.inspect(params))
+local function translate_error_message(error_msg, translated_error_template, params)
+  local final_error = error_msg .. "\n\n" .. "TypeScript Error Translation(s):\n"
 
-  local translated_error = translated_error_template
+  local error_messages = split_on_new_line(error_msg)
 
-  print("translate_error_message - (pre)translated_error: " .. translated_error)
-  for i = 1, #params do
-    translated_error = translated_error:gsub(params[i], matches[i])
+  for _, msg in ipairs(error_messages) do
+    local matches = get_matches(msg)
+    local translated_error = translated_error_template
+
+    for i = 1, #params do
+      translated_error = translated_error:gsub(params[i], matches[i])
+    end
+
+    final_error = final_error .. "  • " .. translated_error .. "\n"
   end
-  print("translate_error_message - (post)translated_error: " .. translated_error)
 
-  return translated_error
+  return final_error
 end
 
 -- Retrieves a markdown file associated with a specific error number.
@@ -155,17 +133,25 @@ M.translate = function(code, message)
     return message
   end
 
-  local translated_error = translate_error_message(message, parsed["original"], parsed["translated"])
+  local translated_error = translate_error_message(message, parsed["translated"], params)
 
   return translated_error
 end
 
+-- Retrieves the name of an LSP client given its client ID.
+-- @param client_id number: The ID of the LSP client.
+-- @return string: The name of the LSP client, or "unknown" if the client is not found.
 local function get_lsp_client_name_by_id(client_id)
   local client = vim.lsp.get_client_by_id(client_id)
   local client_name = client and client.name or "unknown"
   return client_name
 end
 
+-- Overrides the default LSP publishDiagnostics handler to translate diagnostics for TypeScript (tsserver).
+-- @param _ Unused parameter.
+-- @param result table: The diagnostics result object.
+-- @param ctx table: The context object containing LSP client information.
+-- @param config table: The configuration object for the diagnostics.
 M.lsp_publish_diagnostics_override = function(_, result, ctx, config)
   local client_name = get_lsp_client_name_by_id(ctx.client_id)
 
@@ -190,6 +176,8 @@ local DEFAULT_CONFIG = {
 
 local config = {}
 
+-- Sets up the module with user-provided options.
+-- @param opts table: A table of user options to configure the module.
 M.setup = function(opts)
   config = vim.tbl_deep_extend("force", config, DEFAULT_CONFIG, opts or {})
 

@@ -1,32 +1,71 @@
-# Better TypeScript Errors for Neovim
+# ts-error-translator.nvim
 
-Welcome to our repository, a dedicated effort to improve TypeScript error messages directly in Neovim, inspired by and built upon the foundations of [Matt Pocock's ts-error-translator](https://github.com/mattpocock/ts-error-translator).
+Neovim plugin to turn TypeScript errors into plain English.
 
-## About
+This is a port of [Matt Pocock's ts-error-translator for VSCode](https://github.com/mattpocock/ts-error-translator)
 
-This project utilizes the `ts-error-translator` engine to parse and translate TypeScript compiler errors into more understandable and human-friendly messages. Our goal is to integrate these improved error messages into the Neovim development environment, making TypeScript development more accessible and efficient.
+## Installation
 
-## Features
+To install the plugin, use your preferred Neovim plugin manager.
 
-- **Improved Error Messages**: Leveraging the `ts-error-translator` to enhance the readability and comprehensibility of TypeScript compiler errors.
-- **Neovim Integration**: Direct integration into Neovim, allowing for a seamless development experience.
-- **Open Source**: Contributions are welcome! Join us in making TypeScript development better for everyone.
+### lazy.nvim
 
-## Errors Handled
+To install the plugin using lazy.nvim, add the following to your plugin configuration:
 
-Our project handles a variety of TypeScript errors as defined by the `ts-error-translator`. For a detailed list of the errors currently supported, please refer to the [errors directory](https://github.com/mattpocock/ts-error-translator/tree/main/packages/engine/errors) of the `ts-error-translator` repository.
+```lua
+{ 'dmmulroy/ts-error-translator.nvim' }
+```
+
+### Packer
+
+To install the plugin using packer.nvim, add the following to your plugin configuration:
+
+```lua
+use('dmmulroy/ts-error-translator.nvim',)
+```
+
+### Vim-Plug
+
+To install the plugin using vim-plug, add the following to your plugin configuration:
+
+```vim
+Plug 'dmmulroy/tsc.nvim'
+```
+
+Then run `:PlugInstall` to install the plugin.
+
+## Setup
+
+To set up the plugin, add the following line to where you manage your plugins:
+
+```lua
+require('ts-error-translator').setup()
+```
+
+## Configuration
+
+By default, `ts-error-translator.nvim` will attach itself to your `tsserver`
+lsp and automatically start translating errors for you. The following is the
+default configuration for the plugin:
+
+```lua
+{
+  auto_override_publish_diagnostics = true,
+}
+```
+
+If you want to override `tsserver`'s `textDocument/publishDiagnostics` handler
+`manually, ts-error-translator.nvim` exports a function,
+`require('ts-error-translator').lsp_publish_diagnostics_override`, that you can
+then use to override your lsp handlers.
 
 ## Contributing
 
-We welcome contributions! If you're interested in improving TypeScript error handling in Neovim or want to suggest new features, please feel free to create a Pull Request and we will take a look at it.
-
-## Error Templates Destination
-
-The translated and improved TypeScript errors are destined for integration within Neovim via our error templates, which can be found at [better-ts-errors.nvim/error_templates](https://github.com/dmmulroy/better-ts-errors.nvim/tree/main/error_templates).
+Feel free to open issues or submit pull requests if you encounter any bugs or have suggestions for improvements. Your contributions are welcome!
 
 ## License
 
-This project is open-source and available under the [MIT License](LICENSE).
+This plugin is released under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgements
 
