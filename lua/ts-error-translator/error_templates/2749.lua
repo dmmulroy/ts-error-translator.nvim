@@ -1,0 +1,4 @@
+return {
+  original = "'{0}' refers to a value, but is being used as a type here. Did you mean 'typeof {0}'?",
+  translated = "You're trying to use a JavaScript variable where you should be passing a type.",
+}

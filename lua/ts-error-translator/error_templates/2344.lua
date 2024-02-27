@@ -1,0 +1,4 @@
+return {
+  original = "Type '{0}' does not satisfy the constraint '{1}'.",
+  translated = "You're trying to pass in '{0}' into a slot where I can see only '{1}' can be passed.",
+}

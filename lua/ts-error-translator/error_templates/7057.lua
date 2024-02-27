@@ -1,0 +1,4 @@
+return {
+  original = "'yield' expression implicitly results in an 'any' type because its containing generator lacks a return-type annotation.",
+  translated = "I don't know enough about your generator function's return type to safely infer here.",
+}

@@ -1,0 +1,4 @@
+return {
+  original = "An index signature parameter type must be 'string', 'number', 'symbol', or a template literal type.",
+  translated = "Objects in TypeScript (and JavaScript!) can only have strings, numbers or symbols as keys. [Template literal types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html) are a way of constructing strings.",
+}

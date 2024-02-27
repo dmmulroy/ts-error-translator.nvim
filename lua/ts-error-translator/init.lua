@@ -81,9 +81,10 @@ end
 -- @param message string: The original compiler message to parse.
 -- @return string: The translated or original error message.
 M.translate = function(diagnostic)
-  local translation = require("ts-error-translator.templates")[diagnostic.code]
+  local translation_avail, translation =
+    pcall(require, ("ts-error-translator.error_templates.%d"):format(diagnostic.code))
 
-  if translation then
+  if translation_avail then
     local params = get_params(translation.original)
     diagnostic.message = translate_error_message(diagnostic.message, translation.translated, params)
   end

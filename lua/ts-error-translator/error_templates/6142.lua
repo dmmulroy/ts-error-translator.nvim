@@ -1,0 +1,4 @@
+return {
+  original = "Module '{0}' was resolved to '{1}', but '--jsx' is not set.",
+  translated = "You can't import `.jsx` or `.tsx` files until you set `jsx` in your `tsconfig.json`.",
+}

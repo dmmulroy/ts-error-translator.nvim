@@ -1,0 +1,4 @@
+return {
+  original = "Assertions require every name in the call target to be declared with an explicit type annotation.",
+  translated = "You might be using an `asserts` keyword on an arrow function. If you are, change the function to use the `function` keyword.",
+}
