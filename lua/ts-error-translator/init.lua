@@ -4,7 +4,6 @@ local M = {}
 -- All language servers that are supported
 local supported_servers = { "tsserver", "typescript-tools", "vtsls", "volar" }
 
-
 -- Regex pattern for capturing numbered parameters like {0}, {1}, etc.
 local parameter_regex = "({%d})"
 
@@ -54,21 +53,21 @@ local function translate_error_message(error_message, translated_error_template,
   local error_messages = split_on_new_line(error_message)
 
   for _, msg in ipairs(error_messages) do
-    local matches = get_matches(msg)
-
-    -- If there is an error parsing the matches just return the initial error
-    -- a message to create an issue
-    if #params ~= #matches then
-      return error_message
-        .. "\n\n"
-        .. "TypeScript Error Translation(s):\n"
-        .. "  • Something went wrong while translating your error. Please file an issue at https://github.com/dmmulroy/ts-error-translator.nvim and an example of the code that caused this error.\n"
-    end
-
     local translated_error = translated_error_template
 
-    for i = 1, #params do
-      translated_error = translated_error:gsub(params[i], matches[i])
+    -- no need to parse matches and loop if there are no parameters
+    if #params > 0 then
+      local matches = get_matches(msg)
+      for i, param in ipairs(params) do
+        -- If there is an error parsing the matches just return the initial error
+        -- a message to create an issue
+        if not matches[i] then
+          return final_error
+            .. "  • Something went wrong while translating your error. Please file an issue at https://github.com/dmmulroy/ts-error-translator.nvim and an example of the code that caused this error.\n"
+        end
+
+        translated_error = translated_error:gsub(param, matches[i])
+      end
     end
 
     final_error = final_error .. "  • " .. translated_error .. "\n"
