@@ -58,7 +58,7 @@ local function translate_error_message(error_message, translated_error_template,
 
     -- If there is an error parsing the matches just return the initial error
     -- a message to create an issue
-    if #params ~= #matches then
+    if #params > 0 and #params ~= #matches then
       return error_message
         .. "\n\n"
         .. "TypeScript Error Translation(s):\n"
