@@ -2,7 +2,7 @@
 local M = {}
 
 -- All language servers that are supported
-local supported_servers = { "tsserver", "vtsls" }
+local supported_servers = { "tsserver", "vtsls", "volar" }
 
 -- Regex pattern for capturing numbered parameters like {0}, {1}, etc.
 local parameter_regex = "({%d})"
