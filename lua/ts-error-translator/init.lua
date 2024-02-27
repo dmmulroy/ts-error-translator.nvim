@@ -4,7 +4,6 @@ local M = {}
 -- All language servers that are supported
 local supported_servers = { "tsserver", "typescript-tools", "vtsls", "volar" }
 
-
 -- Regex pattern for capturing numbered parameters like {0}, {1}, etc.
 local parameter_regex = "({%d})"
 
@@ -77,58 +76,16 @@ local function translate_error_message(error_message, translated_error_template,
   return final_error
 end
 
--- Retrieves a markdown file associated with a specific error number.
--- @param error_num string: The error number identifier.
--- @return file* | nil: The file pointer to the markdown file, if exists.
-local function get_error_markdown_file(error_num)
-  if error_num == nil then
-    return nil
-  end
-  -- /Users/dmmulroy/Code/personal/ts-error-translator.nvim/lua/ts-error-translator
-  local filename = error_num .. ".md"
-  local plugin_path = vim.fn.fnamemodify(debug.getinfo(1).source:sub(2), ":p:h")
-  local filepath = plugin_path .. "/error_templates/" .. filename
-
-  local markdown_file = io.open(filepath, "r")
-  return markdown_file
-end
-
--- Parses a markdown file to extract 'original' and 'translated' content.
--- @param markdown file*: The markdown file pointer.
--- @return table: A table with 'original' and 'translated' keys containing extracted contents.
-local function parse_markdown(markdown)
-  local contents = markdown:read("*all")
-  markdown:close()
-
-  -- First, remove the leading and trailing '---'
-  local trimmed_markdown = contents:gsub("^%-%-%-%s*", ""):gsub("%s*%-%-%-$", "")
-
-  -- Split the remaining content at the '---' separator
-  local original_content, translated_content = trimmed_markdown:match("^(.-)%s*%-%-%-%s*(.-)$")
-
-  -- Trim whitespace from both contents
-  original_content = original_content:gsub('^original:%s*"(.-)"%s*$', "%1")
-  translated_content = translated_content:gsub("^%s*(.-)%s*$", "%1")
-
-  -- Return the table with the extracted contents
-  return {
-    original = original_content,
-    translated = translated_content,
-  }
-end
-
 -- Attempt to translate a given compiler message into a translated one.
 -- @param code number: The original compiler error number.
 -- @param message string: The original compiler message to parse.
 -- @return string: The translated or original error message.
 M.translate = function(diagnostic)
-  local improved_text_file = get_error_markdown_file(diagnostic.code)
+  local translation = require("ts-error-translator.templates")[diagnostic.code]
 
-  if improved_text_file then
-    local parsed = parse_markdown(improved_text_file)
-    local params = get_params(parsed["original"])
-
-    diagnostic.message = translate_error_message(diagnostic.message, parsed["translated"], params)
+  if translation then
+    local params = get_params(translation.original)
+    diagnostic.message = translate_error_message(diagnostic.message, translation.translated, params)
   end
 
   return diagnostic
