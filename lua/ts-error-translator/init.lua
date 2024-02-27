@@ -1,6 +1,9 @@
 -- Module M is the public API available for ts-error-translator.nvim
 local M = {}
 
+-- All language servers that are supported
+local supported_servers = { "tsserver", "vtsls" }
+
 -- Regex pattern for capturing numbered parameters like {0}, {1}, etc.
 local parameter_regex = "({%d})"
 
@@ -117,24 +120,17 @@ end
 -- @param code number: The original compiler error number.
 -- @param message string: The original compiler message to parse.
 -- @return string: The translated or original error message.
-M.translate = function(code, message)
-  local improved_text_file = get_error_markdown_file(code)
+M.translate = function(diagnostic)
+  local improved_text_file = get_error_markdown_file(diagnostic.code)
 
-  if improved_text_file == nil then
-    return message
+  if improved_text_file then
+    local parsed = parse_markdown(improved_text_file)
+    local params = get_params(parsed["original"])
+
+    diagnostic.message = translate_error_message(diagnostic.message, parsed["translated"], params)
   end
 
-  local parsed = parse_markdown(improved_text_file)
-
-  local params = get_params(parsed["original"])
-
-  if #params == 0 then
-    return message
-  end
-
-  local translated_error = translate_error_message(message, parsed["translated"], params)
-
-  return translated_error
+  return diagnostic
 end
 
 -- Retrieves the name of an LSP client given its client ID.
@@ -148,24 +144,15 @@ end
 
 -- Overrides the default LSP publishDiagnostics handler to translate diagnostics for TypeScript (tsserver).
 -- @param _ Unused parameter.
--- @param result table: The diagnostics result object.
--- @param ctx table: The context object containing LSP client information.
--- @param config table: The configuration object for the diagnostics.
-M.lsp_publish_diagnostics_override = function(_, result, ctx, config)
+-- @param result any: The diagnostics result object.
+-- @param ctx lsp.HandlerContext: The context object containing LSP client information.
+-- @param _ Unused parameter.
+M.translate_diagnostics = function(_, result, ctx, _)
   local client_name = get_lsp_client_name_by_id(ctx.client_id)
 
-  if client_name == "tsserver" then
-    local updated_diagnostics = {}
-
-    for _, diagnostic in ipairs(result.diagnostics) do
-      diagnostic.message = M.translate(diagnostic.code, diagnostic.message)
-
-      table.insert(updated_diagnostics, diagnostic)
-    end
-    result.diagnostics = updated_diagnostics
+  if vim.tbl_contains(supported_servers, client_name) then
+    vim.tbl_map(M.translate, result.diagnostics)
   end
-
-  vim.lsp.diagnostic.on_publish_diagnostics(_, result, ctx, config)
 end
 
 local DEFAULT_CONFIG = {
@@ -180,7 +167,11 @@ M.setup = function(opts)
   config = vim.tbl_deep_extend("force", config, DEFAULT_CONFIG, opts or {})
 
   if config.auto_override_publish_diagnostics == true then
-    vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(M.lsp_publish_diagnostics_override, {})
+    local publish_diagnostics_handler = vim.lsp.handlers["textDocument/publishDiagnostics"]
+    vim.lsp.handlers["textDocument/publishDiagnostics"] = function(...)
+      M.translate_diagnostics(...)
+      publish_diagnostics_handler(...)
+    end
   end
 end
 
