@@ -63,7 +63,8 @@ local function translate_error_message(error_message, translated_error_template,
         -- a message to create an issue
         if not matches[i] then
           return final_error
-            .. "  • Something went wrong while translating your error. Please file an issue at https://github.com/dmmulroy/ts-error-translator.nvim and an example of the code that caused this error.\n"
+              ..
+              "  • Something went wrong while translating your error. Please file an issue at https://github.com/dmmulroy/ts-error-translator.nvim and an example of the code that caused this error.\n"
         end
 
         translated_error = translated_error:gsub(param, matches[i])
