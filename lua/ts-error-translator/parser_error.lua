@@ -45,3 +45,42 @@ local function getDiagnositcMatcher(error_db_key)
 
 
 end
+local function print_table(tbl)
+  for key, value in pairs(tbl) do
+    print(key, value)
+  end
+end
+
+local msg = "'{0}' and '{1}' index signatures are incompatible."
+local escaped_message = "'(.+)' and '(.+)' index signatures are incompatible\\."
+
+local escape_regex = "[%*%+%?%^%$%(%)%{%}%|%[%]%%\\%.]"
+local parameter_regex = "'%{%d%}'"
+local escaped_parameter_regex = "\\\\{%d\\\\}"
+
+
+local function run_escape_regex(str)
+  return string.gsub(str, escape_regex, function(match)
+    return "\\\\" .. match
+  end)
+end
+
+local function create_regex_source(str)
+  local escaped_str = run_escape_regex(str)
+  return string.gsub(escaped_str, escaped_parameter_regex, "(.+)")
+end
+
+local parameters = string.gmatch(msg, parameter_regex)
+
+local function iterator_to_table(iterator)
+  local tbl = {}
+  for match in iterator do
+    print("match:" .. match)
+    if match ~= nil then
+      table.insert(tbl, match)
+    end
+  end
+
+  return tbl
+end
+
