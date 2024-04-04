@@ -2,7 +2,14 @@
 local M = {}
 
 -- All language servers that are supported
-local supported_servers = { "tsserver", "typescript-tools", "vtsls", "volar" }
+local supported_servers = {
+  "astro",
+  "svelte",
+  "tsserver",
+  "typescript-tools",
+  "volar",
+  "vtsls",
+}
 
 -- Regex pattern for capturing numbered parameters like {0}, {1}, etc.
 local parameter_regex = "({%d})"
