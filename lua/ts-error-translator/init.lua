@@ -3,6 +3,7 @@ local M = {}
 
 -- All language servers that are supported
 local supported_servers = {
+  "astro",
   "svelte",
   "tsserver",
   "typescript-tools",
