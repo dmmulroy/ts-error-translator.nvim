@@ -5,7 +5,8 @@ local M = {}
 local supported_servers = {
   "astro",
   "svelte",
-  "tsserver",
+  "ts_ls",
+  "tsserver", -- deprecrated
   "typescript-tools",
   "volar",
   "vtsls",
