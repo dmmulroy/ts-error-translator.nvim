@@ -155,7 +155,7 @@ end
 -- @param result any: The diagnostics result object.
 -- @param ctx lsp.HandlerContext: The context object containing LSP client information.
 -- @param _ Unused parameter.
-M.translate_diagnostics = function(_, result, ctx, _)
+M.translate_diagnostics = function(_, result, ctx)
   local client_name = get_lsp_client_name_by_id(ctx.client_id)
 
   if vim.tbl_contains(supported_servers, client_name) then
