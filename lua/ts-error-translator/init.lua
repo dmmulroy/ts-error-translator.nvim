@@ -32,8 +32,19 @@ end
 local function get_matches(message)
   local matches = {}
 
+  -- Extract quoted strings
   for match in string.gmatch(message, "'(.-)'") do
     table.insert(matches, match)
+  end
+
+  -- If no quoted strings, try to extract numbers (for errors like TS2554)
+  if #matches == 0 then
+    -- Match pattern: Expected X arguments, but got Y.
+    local expected, got = message:match("Expected (%d+) arguments?, but got (%d+)")
+    if expected and got then
+      table.insert(matches, expected)
+      table.insert(matches, got)
+    end
   end
 
   return matches
