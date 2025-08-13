@@ -67,7 +67,7 @@ end
 -- @param params table: The list of parameters to replace in the translated error message.
 -- @return string: The translated error message, or original if replacement isn't possible.
 local function translate_error_message(error_message, translated_error_template, params)
-  local final_error = error_message .. "\n\n" .. "TypeScript Error Translation(s):\n"
+  local final_error = error_message .. "\n\n" .. "Translation:\n"
 
   local error_messages = split_on_new_line(error_message)
 
