@@ -72,7 +72,7 @@ describe("Handles nested errors", function()
     -- Should contain the translation
     assert.is_true(string.find(result.message, "Translation:") ~= nil)
     assert.is_true(string.find(result.message, "I was expecting a type matching") ~= nil)
-    -- Should preserve nested context lines
+    -- Should preserve nested context lines in original error message
     assert.is_true(string.find(result.message, "Types of property 'foo' are incompatible") ~= nil)
     assert.is_true(string.find(result.message, "Type 'number' is not assignable to type 'string'") ~= nil)
     -- Should not contain the error message
@@ -92,7 +92,7 @@ describe("Handles nested errors", function()
     -- Should contain the translation
     assert.is_true(string.find(result.message, "Translation:") ~= nil)
     assert.is_true(string.find(result.message, "I was expecting a type matching") ~= nil)
-    -- Should preserve all nested context lines
+    -- Should preserve all nested context lines in original error message
     assert.is_true(string.find(result.message, "Types of property 'bar' are incompatible") ~= nil)
     assert.is_true(string.find(result.message, "Types of property 'foo' are incompatible") ~= nil)
     -- Should not contain the error message
