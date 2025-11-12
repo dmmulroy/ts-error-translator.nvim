@@ -46,3 +46,56 @@ describe("Handles links", function()
     assert.equals(expected_message, translator.translate(original_message))
   end)
 end)
+
+describe("Handles nested errors", function()
+  it("Translates single-line TS2322 error", function()
+    local diagnostic = {
+      code = "2322",
+      message = "Type '{ foo: number; }' is not assignable to type '{ foo: string; }'."
+    }
+    local result = translator.translate(diagnostic)
+    -- Should contain the translation
+    assert.is_true(string.find(result.message, "Translation:") ~= nil)
+    assert.is_true(string.find(result.message, "I was expecting a type matching") ~= nil)
+    -- Should not contain the error message
+    assert.is_false(string.find(result.message, "Something went wrong") ~= nil)
+  end)
+
+  it("Translates multi-line nested TS2322 error", function()
+    local diagnostic = {
+      code = "2322",
+      message = [[Type '{ foo: number; }' is not assignable to type '{ foo: string; }'.
+  Types of property 'foo' are incompatible.
+    Type 'number' is not assignable to type 'string'.]]
+    }
+    local result = translator.translate(diagnostic)
+    -- Should contain the translation
+    assert.is_true(string.find(result.message, "Translation:") ~= nil)
+    assert.is_true(string.find(result.message, "I was expecting a type matching") ~= nil)
+    -- Should preserve nested context lines
+    assert.is_true(string.find(result.message, "Types of property 'foo' are incompatible") ~= nil)
+    assert.is_true(string.find(result.message, "Type 'number' is not assignable to type 'string'") ~= nil)
+    -- Should not contain the error message
+    assert.is_false(string.find(result.message, "Something went wrong") ~= nil)
+  end)
+
+  it("Translates deeply nested TS2322 error", function()
+    local diagnostic = {
+      code = "2322",
+      message = [[Type '{ bar: { foo: number; }; }' is not assignable to type '{ bar: { foo: string; }; }'.
+  Types of property 'bar' are incompatible.
+    Type '{ foo: number; }' is not assignable to type '{ foo: string; }'.
+      Types of property 'foo' are incompatible.
+        Type 'number' is not assignable to type 'string'.]]
+    }
+    local result = translator.translate(diagnostic)
+    -- Should contain the translation
+    assert.is_true(string.find(result.message, "Translation:") ~= nil)
+    assert.is_true(string.find(result.message, "I was expecting a type matching") ~= nil)
+    -- Should preserve all nested context lines
+    assert.is_true(string.find(result.message, "Types of property 'bar' are incompatible") ~= nil)
+    assert.is_true(string.find(result.message, "Types of property 'foo' are incompatible") ~= nil)
+    -- Should not contain the error message
+    assert.is_false(string.find(result.message, "Something went wrong") ~= nil)
+  end)
+end)

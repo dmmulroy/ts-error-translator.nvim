@@ -71,25 +71,33 @@ local function translate_error_message(error_message, translated_error_template,
 
   local error_messages = split_on_new_line(error_message)
 
-  for _, msg in ipairs(error_messages) do
-    local translated_error = translated_error_template
+  -- Only translate the first line, as nested lines are contextual details
+  -- that may not match the template pattern
+  for i, msg in ipairs(error_messages) do
+    if i == 1 then
+      -- Translate the first line using the template
+      local translated_error = translated_error_template
 
-    -- no need to parse matches and loop if there are no parameters
-    if #params > 0 then
-      local matches = get_matches(msg)
-      for i, param in ipairs(params) do
-        -- If there is an error parsing the matches just return the initial error
-        -- a message to create an issue
-        if not matches[i] then
-          return final_error
-            .. "  • Something went wrong while translating your error. Please file an issue at https://github.com/dmmulroy/ts-error-translator.nvim and an example of the code that caused this error.\n"
+      -- no need to parse matches and loop if there are no parameters
+      if #params > 0 then
+        local matches = get_matches(msg)
+        for j, param in ipairs(params) do
+          -- If there is an error parsing the matches just return the initial error
+          -- a message to create an issue
+          if not matches[j] then
+            return final_error
+              .. "  • Something went wrong while translating your error. Please file an issue at https://github.com/dmmulroy/ts-error-translator.nvim and an example of the code that caused this error.\n"
+          end
+
+          translated_error = translated_error:gsub(param, matches[j])
         end
-
-        translated_error = translated_error:gsub(param, matches[i])
       end
-    end
 
-    final_error = final_error .. "  • " .. translated_error .. "\n"
+      final_error = final_error .. "  • " .. translated_error .. "\n"
+    else
+      -- Keep nested lines as-is for additional context
+      final_error = final_error .. "    " .. msg .. "\n"
+    end
   end
 
   return final_error
