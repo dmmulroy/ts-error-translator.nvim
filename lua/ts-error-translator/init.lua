@@ -32,8 +32,19 @@ end
 local function get_matches(message)
   local matches = {}
 
+  -- Extract quoted strings
   for match in string.gmatch(message, "'(.-)'") do
     table.insert(matches, match)
+  end
+
+  -- If no quoted strings, try to extract numbers (for errors like TS2554)
+  if #matches == 0 then
+    -- Match pattern: Expected X arguments, but got Y.
+    local expected, got = message:match("Expected (%d+) arguments?, but got (%d+)")
+    if expected and got then
+      table.insert(matches, expected)
+      table.insert(matches, got)
+    end
   end
 
   return matches
@@ -56,7 +67,7 @@ end
 -- @param params table: The list of parameters to replace in the translated error message.
 -- @return string: The translated error message, or original if replacement isn't possible.
 local function translate_error_message(error_message, translated_error_template, params)
-  local final_error = error_message .. "\n\n" .. "TypeScript Error Translation(s):\n"
+  local final_error = error_message .. "\n\n" .. "Translation:\n"
 
   local error_messages = split_on_new_line(error_message)
 
