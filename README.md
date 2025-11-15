@@ -1,6 +1,6 @@
 # ts-error-translator.nvim
 
-![image](https://github.com/dmmulroy/ts-error-translator.nvim/assets/2755722/5fcd1f42-d941-491b-a89b-33ab3c2ed29b)
+![image](https://github.com/user-attachments/assets/c87a62ad-c47a-4221-8cf2-306e04e4ff0a)
 
 A Neovim port of [Matt Pocock's ts-error-translator for VSCode](https://github.com/mattpocock/ts-error-translator) for turning messy and confusing TypeScript errors into plain English.
 
