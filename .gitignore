@@ -1,3 +1,2 @@
 .luarc.json
-.git/
-.github/
+node_modules

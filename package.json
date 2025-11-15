@@ -1,0 +1,11 @@
+{
+  "name": "ts-error-translator.nvim",
+  "private": true,
+  "description": "Build tools for ts-error-translator.nvim",
+  "scripts": {
+    "build": "node build-lua-db.js"
+  },
+  "dependencies": {
+    "front-matter": "^4.0.2"
+  }
+}
