@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const fm = require('front-matter');
 
-const dbJson = require('./src/tsErrorMessages.json');
+const dbJson = require('./tsErrorMessages.json');
 const errorsDir = './errors';
 
 const results = [];

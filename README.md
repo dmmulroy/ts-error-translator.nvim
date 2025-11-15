@@ -46,9 +46,30 @@ To set up the plugin, add the following line to where you manage your plugins:
 
 ```lua
 require("ts-error-translator").setup({
-  auto_attach = true  -- Automatically hook into vim.diagnostic
+  -- Auto-attach to LSP servers for TypeScript diagnostics (default: true)
+  auto_attach = true,
+
+  -- LSP server names to translate diagnostics for (default shown below)
+  servers = {
+    "astro",
+    "svelte",
+    "ts_ls",
+    "tsserver",           -- deprecated, use ts_ls
+    "typescript-tools",
+    "volar",
+    "vtsls",
+  },
 })
 ```
+
+### Configuration Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `auto_attach` | `boolean` | `true` | Automatically hook into vim.diagnostic for configured servers |
+| `servers` | `string[]` | See above | List of LSP server names to translate diagnostics for |
+
+**Note**: `auto_override_publish_diagnostics` is deprecated. Use `auto_attach` instead.
 
 ## Usage
 

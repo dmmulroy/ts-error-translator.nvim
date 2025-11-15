@@ -1,7 +1,4 @@
--- Run with: nvim --headless -c "PlenaryBustedDirectory tests/spec/"
-
--- Setup path
-package.path = "./lua/?.lua;./lua/?/init.lua;" .. package.path
+-- Run with: nvim --headless -u tests/minimal_init.vim -c "PlenaryBustedFile tests/spec/parser_spec.lua"
 
 local parser = require("ts-error-translator.parser")
 

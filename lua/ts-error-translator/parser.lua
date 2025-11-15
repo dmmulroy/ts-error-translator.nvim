@@ -1,8 +1,10 @@
+---@diagnostic disable: undefined-field
 local db_errors = require("ts-error-translator.db")
 local matcher = require("ts-error-translator.matcher")
 local utils = require("ts-error-translator.utils")
 local lru = require("ts-error-translator.lru")
 
+---@type LRUCache
 local cache = lru.new(100)
 
 local M = {}
@@ -10,7 +12,22 @@ local M = {}
 local ERROR_FALLBACK_MESSAGE = [[• Something went wrong while translating your error. Please file an issue at https://github.com/dmmulroy/ts-error-translator.nvim and an example of the code that caused this error.
 ]]
 
--- Extract TS error codes from message (e.g., "error TS2707:" -> 2707)
+---@class ParseInfo
+---@field rawError string Original matched error text
+---@field startIndex number Start position in message
+---@field endIndex number End position in message
+---@field items string[] Extracted parameter values
+
+---@class ParseResult
+---@field code number TypeScript error code
+---@field error string Error pattern
+---@field category string Error category
+---@field parseInfo ParseInfo Parse metadata
+---@field improvedError? ImprovedError Translated error message
+
+---Extract TS error codes from message (e.g., "error TS2707:" -> 2707)
+---@param message string
+---@return number[]
 local function extract_error_codes(message)
   local codes = {}
   -- Match TS followed by digits (case insensitive)
@@ -20,6 +37,9 @@ local function extract_error_codes(message)
   return codes
 end
 
+---Parse error message and extract TypeScript error information
+---@param message string Diagnostic message containing TS error codes
+---@return ParseResult[]
 local function parse_errors_impl(message)
   local cached = lru.get(cache, message)
   if cached then
@@ -114,6 +134,9 @@ local function parse_errors_impl(message)
   return results
 end
 
+---Parse errors from diagnostic message with error handling
+---@param message string Diagnostic message to parse
+---@return ParseResult[] Array of parsed errors or fallback error
 function M.parse_errors(message)
   local success, result = pcall(parse_errors_impl, message)
 
