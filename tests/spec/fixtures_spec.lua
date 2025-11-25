@@ -448,7 +448,21 @@ describe("Fixture Coverage Tests", function()
       local msg = "Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'User'."
       local result = translate_diagnostic_message(msg, 7053)
 
-      assert.is_not_nil(result)
+      assert.is_true(has_translation(msg, result))
+      assert.is_true(string.find(result, "`string`") ~= nil)
+      assert.is_true(string.find(result, "`User`") ~= nil)
+    end)
+
+    it("TS7053: Element implicit any with nested quotes in type", function()
+      -- This is the exact error from issue: types with nested single quotes (object literal property names)
+      local msg = "Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ '/3-ui/heading.md': { 'enabled': boolean; }; }'."
+      local result = translate_diagnostic_message(msg, 7053)
+
+      assert.is_true(has_translation(msg, result))
+      -- Verify placeholders were replaced (no {0} or {1} in output)
+      assert.is_nil(string.find(result, "{0}"))
+      assert.is_nil(string.find(result, "{1}"))
+      assert.is_true(string.find(result, "`string`") ~= nil)
     end)
 
     it("TS7057: yield implicit any", function()
