@@ -1,9 +1,3 @@
----@class ErrorInfo
----@field pattern string Error pattern with {N} placeholders for parameters
----@field category string Error category (e.g., "Error", "Message")
----@field improved_message? string Human-friendly error explanation
-
----@type table<number, ErrorInfo>
 return {
   [1002] = {
     pattern = "Unterminated string literal.",
