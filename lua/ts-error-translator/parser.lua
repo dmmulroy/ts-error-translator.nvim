@@ -85,9 +85,10 @@ local function parse_errors_impl(message)
         -- Escape special Lua pattern chars (curly braces are not Lua special chars)
         lua_pattern = lua_pattern:gsub("([%.%+%-%*%?%[%]%^%$%(%)%%])", "%%%1")
         -- Replace {N} placeholders with capture groups
-        -- For quoted params like '{0}', use non-quote matching to avoid going past closing quote
+        -- For quoted params like '{0}', use non-greedy matching to handle TypeScript types
+        -- with nested quotes (e.g., object literals with quoted property names)
         -- For non-quoted params, use greedy matching (safe since not bounded by quotes)
-        lua_pattern = lua_pattern:gsub("'{%d}'", "'([^']+)'")
+        lua_pattern = lua_pattern:gsub("'{%d}'", "'(.-)'")
         lua_pattern = lua_pattern:gsub("{%d}", "(.+)")
 
         -- Extract captures from the matched text
