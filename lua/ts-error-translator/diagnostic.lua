@@ -48,6 +48,23 @@ function M.setup(opts)
 
     return original_publish_diagnostics(err, result, ctx, config)
   end
+
+  local original_diagnostic = vim.lsp.handlers["textDocument/diagnostic"]
+  vim.lsp.handlers["textDocument/diagnostic"] = function(err, result, ctx)
+    if result and result.items then
+      local client_name = get_lsp_client_name_by_id(ctx.client_id)
+
+      if vim.tbl_contains(opts.servers, client_name) then
+        for _, diag in ipairs(result.items) do
+          if diag.message then
+            diag.message = translate_diagnostic_message(diag.message, diag.code)
+          end
+        end
+      end
+    end
+
+    return original_diagnostic(err, result, ctx)
+  end
 end
 
 return M
