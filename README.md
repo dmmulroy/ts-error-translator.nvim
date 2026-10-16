@@ -122,7 +122,7 @@ make build
 ```
 
 This parses:
-- `src/tsErrorMessages.json` (1796 TS error patterns)
+- `tsErrorMessages.json` (1796 TS error patterns)
 - `errors/*.md` (67 improved messages)
 
 And generates a single Lua table with merged data.
@@ -133,7 +133,6 @@ Run tests with Neovim:
 
 ```bash
 make test
-# or: ./tests/run_tests.sh
 ```
 
 Tests verify:
